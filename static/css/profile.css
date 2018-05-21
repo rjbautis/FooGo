@@ -1,0 +1,52 @@
+body {
+  font-family: 'Open Sans', sans-serif !important;
+  background-image: url('https://png.pngtree.com/thumb_back/fw800/back_pic/03/89/16/4357d7e31335654.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+.profile {
+  margin-top: 30px;
+}
+
+.profilecard {
+  background-color:rgba(255,255,255,.9);
+  padding: 30px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.profilecard a {
+  color: #88A087 !important;
+}
+
+.profilecard a:hover {
+  text-decoration: none !important;
+  color: #96ab95 !important;
+}
+
+.lilborder {
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.badge {
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: #88A087 !important;
+  color: #fff;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+label {
+    margin-right: 10px !important;
+}

@@ -20,7 +20,11 @@ def index():
     # response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
 
+def profile():
 
+    user = User(me)
+
+    return locals()
 def user_bar():
     action = '/user'
     if auth.user:
