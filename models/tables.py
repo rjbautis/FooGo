@@ -17,6 +17,7 @@ db.define_table('checklist',
                 Field('user_email', default=get_user_email()),
                 Field('title'),
                 Field('memo', 'text'),
+                Field('category',),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
                 Field('is_public', 'boolean', default=False))
 
@@ -30,3 +31,5 @@ db.checklist.is_public.readable = db.checklist.is_public.writable = False
 
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
+User= db.auth_user
+me = auth.user_id

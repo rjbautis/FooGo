@@ -7,7 +7,7 @@
 # - user is required for authentication and authorization
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
-
+import json
 
 def index():
     """
@@ -19,7 +19,14 @@ def index():
     """
     # response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
+def burger():
 
+    return dict(message=T('Welcome to web2py!'))
+def profile():
+
+    user = User(me)
+
+    return locals()
 
 def add():
     """Adds a checklist for the"""
