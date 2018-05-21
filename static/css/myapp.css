@@ -67,7 +67,8 @@ button:disabled:hover {
 }
 
 .blur_text {
-  transition: .5s ease;
+  color: dimgrey;
+  transition: .3s ease;
   opacity: 0;
   position: absolute;
   top: 50%;
@@ -84,7 +85,7 @@ button:disabled:hover {
   opacity: 0.3;
 }
 
-.zoom:hover  .blur_text {
+.zoom:hover .blur_text {
   opacity: 1;
 }
 
