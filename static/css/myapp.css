@@ -1,0 +1,79 @@
+/* line 1, ../sass/_main.scss */
+.colorful {
+  color: #bb8833;
+}
+
+/* line 1, ../sass/_main.scss */
+.colorful {
+  color: #bb8833;
+}
+
+/* line 5, ../sass/_main.scss */
+div.main_content {
+  padding: 10px;
+}
+
+/* line 9, ../sass/_main.scss */
+div.add_btn {
+  margin: 5px;
+}
+/* line 11, ../sass/_main.scss */
+div.add_btn a {
+  padding: 10px;
+}
+
+/* line 16, ../sass/_main.scss */
+div.memo {
+  margin: 5px;
+  border: 2px solid gray;
+  padding: 5px;
+}
+/* line 21, ../sass/_main.scss */
+div.memo div.memo_title {
+  font-weight: bold;
+  font-size: 150%;
+}
+/* line 25, ../sass/_main.scss */
+div.memo div.button_list {
+  text-align: right;
+  margin-top: 10px;
+}
+/* line 27, ../sass/_main.scss */
+div.memo div.button_list div.buttons {
+  display: inline-block;
+}
+/* line 31, ../sass/_main.scss */
+div.memo div.button_list a.btn {
+  padding: 10px;
+}
+
+button:disabled {
+  background-color: lightgray;
+}
+button:disabled:hover {
+  box-shadow: none;
+}
+
+/* Grid of cards */
+.card-img-top {
+  width: 100%;
+  height: 20vw;
+  object-fit: cover;
+}
+
+.zoom {
+  position: relative;
+  overflow: hidden;
+}
+
+
+.zoom:hover img {
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  transform: scale(1.1);
+  opacity: 0.3;
+}
+
+.zoom img {
+  transition: all 0.3s;
+}
