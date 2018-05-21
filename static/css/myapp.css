@@ -66,6 +66,16 @@ button:disabled:hover {
   overflow: hidden;
 }
 
+.blur_text {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
 
 .zoom:hover img {
   -webkit-transform: scale(1.1);
@@ -74,6 +84,15 @@ button:disabled:hover {
   opacity: 0.3;
 }
 
+.zoom:hover  .blur_text {
+  opacity: 1;
+}
+
 .zoom img {
   transition: all 0.3s;
+}
+
+.text {
+  font-size: 40px;
+  text-transform: uppercase;
 }
