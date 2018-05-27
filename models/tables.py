@@ -13,9 +13,9 @@ def get_user_email():
     return auth.user.email if auth.user is not None else None
 
 
-db.define_table('checklist',
+db.define_table('orders',
                 Field('user_email', default=get_user_email()),
-                Field('title'),
+                Field('location'),
                 Field('memo', 'text'),
                 Field('category',),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
