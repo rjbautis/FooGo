@@ -1,4 +1,3 @@
-// This is the js for the default/index.html view.
 
 
 var app = function() {
@@ -15,8 +14,8 @@ var app = function() {
     };
 
     // Enumerates an array.
-    var enumerate = function(v) { 
-        var k=0; 
+    var enumerate = function(v) {
+        var k=0;
         return v.map(function(e) {
             e._idx = k++;
         });
@@ -35,7 +34,7 @@ var app = function() {
 
     // Get memos from database within indices 0 up to 10
     self.get_memos = function() {
-  
+        console.log(self.vue.logged_in);
         // Return a json containing the database information
         $.getJSON(get_memos_url(0, 10), function(data) {
             self.vue.memos = data.memos;
@@ -74,12 +73,13 @@ var app = function() {
     self.add_memo = function () {
         $.post(add_memo_url,
             {
-                title: self.vue.form_name,
+                name: self.vue.form_name,
+                category: self.vue.form_category,
                 memo: self.vue.form_memo,
             },
             function (data) {
                 $.web2py.enableElement($("#add_memo_submit"));
-                self.vue.memos.unshift(data.title);
+                self.vue.memos.unshift(data.name);
                 enumerate(self.vue.memos);
             });
     };
@@ -101,7 +101,7 @@ var app = function() {
 
     self.edit_memo = function(memo_idx) {
         // Remember the original memo title and content (in case the user decides to cancel the edit)
-        self.vue.original_memo_title = self.vue.memos[memo_idx].title;        
+        self.vue.original_memo_title = self.vue.memos[memo_idx].title;
         self.vue.original_memo_content = self.vue.memos[memo_idx].memo;
 
         self.vue.is_editing_memo = !self.vue.is_editing_memo;
@@ -112,7 +112,7 @@ var app = function() {
         // if user canceled the edit, let the current memo being edited be returned to original state
         self.vue.memos[memo_idx].title = self.vue.original_memo_title;
         self.vue.memos[memo_idx].memo = self.vue.original_memo_content;
-        
+
         self.vue.is_editing_memo = !self.vue.is_editing_memo;
         self.vue.edit_id = 0;
 
@@ -124,8 +124,8 @@ var app = function() {
         // Make a post request by deleting the desired memo from the list of memos and reordering it with enumerate
         console.log(memo_idx);
         $.post(del_memo_url,
-            { 
-                memo_id: self.vue.memos[memo_idx].id 
+            {
+                memo_id: self.vue.memos[memo_idx].id
             },
             function () {
                 self.vue.memos.splice(memo_idx, 1);
@@ -138,7 +138,7 @@ var app = function() {
         );
         console.log(self.vue.memos);
     };
-   
+
 
     // Toggle's the is_public button on the front end, then makes jquery api call to backend
     self.toggle_public_button = function (memo_idx) {
@@ -147,9 +147,9 @@ var app = function() {
         memo.is_public = !memo.is_public;
 
         // Makes api call to toggle_public_url
-        $.post(toggle_public_url, 
-            {  
-                memo_id: self.vue.memos[memo_idx].id 
+        $.post(toggle_public_url,
+            {
+                memo_id: self.vue.memos[memo_idx].id
             },
             function (data) {
                 enumerate(self.vue.memos);
@@ -168,6 +168,7 @@ var app = function() {
             logged_in: false,
             has_more: false,
             form_name: null,
+            form_category: null,
             form_memo: null,
             form_track: null,
             is_adding_memo: false,

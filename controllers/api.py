@@ -1,10 +1,15 @@
 # Here go your api methods.
 
 def get_memos():
+    logger.info("HELP")
+    # db.checklist.truncate()
+
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     memos = []
     has_more = False
+
+    logger.info("inside")
 
     # If user is logged in, return memos belonging to him as well as public ones
     if auth.user is not None:
@@ -14,12 +19,15 @@ def get_memos():
     else:
         rows = db(db.checklist.is_public == 'True').select(db.checklist.ALL, limitby=(start_idx, end_idx + 1))
 
+    logger.info(rows)
+
+
     # Append only the first ten memos to the list
     for i, r in enumerate(rows):
         if i < end_idx - start_idx:
             t = dict(
                 id = r.id,
-                title = r.title,
+                driver_name = r.driver_name,
                 memo = r.memo,
                 user_email = r.user_email,
                 is_public = r.is_public
@@ -27,10 +35,13 @@ def get_memos():
             memos.append(t)
         else:
             has_more = True
-    
+    logger.info("inside3")
+
     # Determine if the user is logged in or not
     logged_in = auth.user is not None
-    
+
+    logger.info(logged_in)
+
     return response.json(dict(
         memos=memos,
         logged_in=logged_in,
@@ -59,11 +70,11 @@ def toggle_public():
 @auth.requires_signature()
 def add_memo():
     t_id = db.checklist.insert(
-        title = request.vars.title,
+        driver_name = request.vars.name,
         memo = request.vars.memo,
     )
     t = db.checklist(t_id)
-    return response.json(dict(title=t))
+    return response.json(dict(name=t))
 
 
 @auth.requires_signature()

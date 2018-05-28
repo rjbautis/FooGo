@@ -15,9 +15,10 @@ def get_user_email():
 
 db.define_table('checklist',
                 Field('user_email', default=get_user_email()),
-                Field('food_location'),
+                Field('food_location', default="Santa Cruz, CA"),
+                Field('driver_name', 'text'),
                 Field('memo', 'text'),
-                Field('category',),
+                Field('category'),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
                 Field('is_public', 'boolean', default=False))
 
