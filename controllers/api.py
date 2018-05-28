@@ -72,6 +72,7 @@ def add_memo():
     t_id = db.checklist.insert(
         driver_name = request.vars.name,
         memo = request.vars.memo,
+        category = request.vars.category,
     )
     t = db.checklist(t_id)
     return response.json(dict(name=t))
