@@ -19,7 +19,7 @@ db.define_table('checklist',
                 Field('latitude','double', readable=False),
                 Field('longitude','double', reable=False),
                 Field('driver_name', 'text'),
-                Field('memo', 'text'),
+                Field('listing', 'text'),
                 Field('category'),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
                 Field('is_public', 'boolean', default=False))
@@ -29,7 +29,7 @@ db.checklist.user_email.readable = False
 db.checklist.updated_on.writable = db.checklist.updated_on.readable = False
 db.checklist.id.writable = db.checklist.id.readable = False
 
-# Hides the check box 'is_public' for the user when creating a memo
+# Hides the check box 'is_public' for the user when creating a listing
 db.checklist.is_public.readable = db.checklist.is_public.writable = False
 
 # after defining tables, uncomment below to enable auditing
