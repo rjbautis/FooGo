@@ -30,6 +30,13 @@ db.checklist.id.writable = db.checklist.id.readable = False
 # Hides the check box 'is_public' for the user when creating a memo
 db.checklist.is_public.readable = db.checklist.is_public.writable = False
 
+db.define_table('user_images',
+                Field('created_on', 'datetime', default=request.now),
+                Field('created_by', 'reference auth_user', default=auth.user_id),
+                Field('image_url'),
+                )
+
+
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
 User= db.auth_user

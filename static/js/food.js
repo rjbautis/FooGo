@@ -14,185 +14,122 @@ var app = function() {
     };
 
     // Enumerates an array.
-    var enumerate = function(v) {
-        var k=0;
-        return v.map(function(e) {
-            e._idx = k++;
-        });
+    var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
+
+    self.open_uploader = function () {
+        $("div#uploader_div").show();
+        self.vue.is_uploading = true;
+    };
+
+    self.close_uploader = function () {
+        $("div#uploader_div").hide();
+        self.vue.is_uploading = false;
+        $("input#file_input").val(""); // This clears the file choice once uploaded.
+
+    };
+
+    self.upload_file = function (event) {
+        // Reads the file.
+        var input = event.target;
+        var file = input.files[0];
+        var reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            self.vue.img_url = reader.result;
+        }, false);
+        if (file) {
+            reader.readAsDataURL(file);
+            // Gets an upload URL.
+            console.log("Trying to get the upload url");
+            $.getJSON('https://upload-dot-luca-teaching.appspot.com/start/uploader/get_upload_url',
+                function (data) {
+                    // We now have upload (and download) URLs.
+                    var put_url = data['signed_url'];
+                    var get_url = data['access_url'];
+                    console.log("Received upload url: " + put_url);
+                    // Uploads the file, using the low-level interface.
+                    var req = new XMLHttpRequest();
+                    req.addEventListener("load", self.upload_complete(get_url));
+
+                    req.open("PUT", put_url, true);
+                    req.send(file);
+                });
+        }
     };
 
 
-    // Grab urls from the database table within indices start up to end, rather than all of them
-    function get_memos_url(start_idx, end_idx) {
+    self.upload_complete = function(get_url) {
+        // Hides the uploader div.
+        self.vue.show_img = true;
+        self.close_uploader();
+        console.log('The file was uploaded; it is now available at ' + get_url);
+
+        console.log("compensate for latency");
+        var add = function () {
+            $.post(add_image_url,
+                {
+                    image_url: get_url,
+                },
+                function (data) {
+                    self.vue.user_images.unshift(data.user_images);
+                    enumerate(self.vue.user_images);
+                })
+        }
+        setTimeout(add, 1500);
+        // TODO: recursive method to wait for ajax status of get_url, instead of timeout
+    };
+
+    function get_user_images_url(start_idx, end_idx) {
         var pp = {
             start_idx: start_idx,
-            end_idx: end_idx
+            end_idx: end_idx,
         };
-        console.log(memos_url + "?" + $.param(pp));
-        return memos_url + "?" + $.param(pp);
+        return user_images_url + "&" + $.param(pp);
     }
 
-    // Get memos from database within indices 0 up to 10
-    self.get_memos = function() {
-        console.log(self.vue.logged_in);
-        // Return a json containing the database information
-        $.getJSON(get_memos_url(0, 10), function(data) {
-            self.vue.memos = data.memos;
-            self.vue.has_more = data.has_more;
-            self.vue.logged_in = data.logged_in;
-
-            // Call enumerate function such that the array of memos is reordered by idx
-            enumerate(self.vue.memos);
+    self.get_user_images = function (user_id) {
+        $.getJSON(get_user_images_url(0, 1), {
+            user_id: user_id,
+        },
+            function (data) {
+                console.log(user_id);
+                //console.log(data.user_images);
+                self.vue.user_images = data.user_images;
+                enumerate(self.vue.user_images);
         })
     };
 
-    // Returns the next 10 memos that have not been loaded on the webpage yet
-    self.get_more = function () {
-        console.log("HI");
-        var num_memos = self.vue.memos.length;
-
-        console.log(num_memos);
-
-        // Using the length of the current list of memos, extend the list with the next 10 memos from db
-        $.getJSON(get_memos_url(num_memos, num_memos + 10), function (data) {
-            self.vue.has_more = data.has_more;
-            self.extend(self.vue.memos, data.memos);
-
-            // Call enumerate function such that the new array of memos is reordered by idx
-            enumerate(self.vue.memos);
-        });
+    self.get_users = function () {
+        $.getJSON(get_user_url, function (data) {
+            self.vue.users = data.users;
+            enumerate(self.vue.users);
+        })
     };
 
-    // Toggles add button
-    self.add_memo_button = function () {
-        self.vue.is_adding_memo = !self.vue.is_adding_memo;
-    };
-
-
-    // Makes jquery api call to add_memo_url with the submitted form data
-    self.add_memo = function () {
-        $.post(add_memo_url,
-            {
-                name: self.vue.form_name,
-                category: self.vue.form_category,
-                memo: self.vue.form_memo,
-            },
-            function (data) {
-                $.web2py.enableElement($("#add_memo_submit"));
-                self.vue.memos.unshift(data.name);
-                enumerate(self.vue.memos);
-            });
-    };
-
-    // Makes jquery api call to edit_memo_url with the updated/editted title and memo content
-    self.edit_memo_submit = function () {
-        $.post(edit_memo_url,
-            {
-                title_content: self.vue.edit_title_content,
-                memo_content: self.vue.edit_memo_content,
-                id: self.vue.edit_id
-            },
-            function (data) {
-                $.web2py.enableElement($("#edit_memo_submit"));
-                self.vue.is_editing_memo = !self.vue.is_editing_memo;
-            });
-    };
-
-
-    self.edit_memo = function(memo_idx) {
-        // Remember the original memo title and content (in case the user decides to cancel the edit)
-        self.vue.original_memo_title = self.vue.memos[memo_idx].title;
-        self.vue.original_memo_content = self.vue.memos[memo_idx].memo;
-
-        self.vue.is_editing_memo = !self.vue.is_editing_memo;
-        self.vue.edit_id = self.vue.memos[memo_idx].id;
-    };
-
-    self.cancel_edit = function (memo_idx) {
-        // if user canceled the edit, let the current memo being edited be returned to original state
-        self.vue.memos[memo_idx].title = self.vue.original_memo_title;
-        self.vue.memos[memo_idx].memo = self.vue.original_memo_content;
-
-        self.vue.is_editing_memo = !self.vue.is_editing_memo;
-        self.vue.edit_id = 0;
-
-    };
-
-    // Deletes memo from the webpage (and the database using del_memo_url)
-    // Uses memo_idx (instantiated by emuerate() function for all memos displayed) instead of memo.id (from database)
-    self.delete_memo = function(memo_idx) {
-        // Make a post request by deleting the desired memo from the list of memos and reordering it with enumerate
-        console.log(memo_idx);
-        $.post(del_memo_url,
-            {
-                memo_id: self.vue.memos[memo_idx].id
-            },
-            function () {
-                self.vue.memos.splice(memo_idx, 1);
-                // if memos length is 10 or less, then we don't need to show loading button
-                if(self.vue.memos.length < 11) {
-                    self.vue.has_more = false;
-                }
-                enumerate(self.vue.memos);
-            }
-        );
-        console.log(self.vue.memos);
-    };
-
-
-    // Toggle's the is_public button on the front end, then makes jquery api call to backend
-    self.toggle_public_button = function (memo_idx) {
-        var memo = self.vue.memos[memo_idx];
-        // Toggles the public icon of the memo
-        memo.is_public = !memo.is_public;
-
-        // Makes api call to toggle_public_url
-        $.post(toggle_public_url,
-            {
-                memo_id: self.vue.memos[memo_idx].id
-            },
-            function (data) {
-                enumerate(self.vue.memos);
-            }
-        )
-    };
-
-
-    // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            memos: [],
-            logged_in: false,
-            has_more: false,
-            form_name: null,
-            form_category: null,
-            form_memo: null,
-            form_track: null,
-            is_adding_memo: false,
-            is_editing_memo: false,
-            edit_id: 0,
-            edit_title_content: null,
-            edit_memo_content: null,
-            original_memo_title: null,
-            original_memo_content: null
+            user_images: [],
+            users: [],
+            is_uploading: false,
+            img_url: null,
+            show_img: false,
+            self_page: true // Leave it to true, so initially you are looking at your own images.
         },
         methods: {
-            toggle_public_button: self.toggle_public_button,
-            add_memo_button: self.add_memo_button,
-            add_memo: self.add_memo,
-            delete_memo: self.delete_memo,
-            get_more: self.get_more,
-            edit_memo: self.edit_memo,
-            edit_memo_submit: self.edit_memo_submit,
-            cancel_edit: self.cancel_edit,
+            open_uploader: self.open_uploader,
+            close_uploader: self.close_uploader,
+            upload_file: self.upload_file,
+            get_user_images: self.get_user_images,
         }
 
     });
 
-    self.get_memos();
+    self.get_user_images();
+    self.get_users();
+
     $("#vue-div").show();
 
     return self;

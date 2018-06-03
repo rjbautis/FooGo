@@ -1,5 +1,6 @@
 # Here go your api methods.
 
+
 def get_memos():
     logger.info("HELP")
     # db.checklist.truncate()
@@ -99,3 +100,57 @@ def edit_memo():
             memo = request.vars.memo_content,
         )
     return dict()
+
+
+# users and pictures
+
+
+@auth.requires_signature()
+def add_image():
+    image_id = db.user_images.insert(
+        image_url=request.vars.image_url,
+        user_id=request.vars.user_id
+    )
+    return response.json(dict(user_images=dict(
+        id=image_id,
+        image_url=request.vars.image_url,
+        user_id=request.vars.user_id
+    )))
+
+
+@auth.requires_signature(hash_vars=False)
+def get_user_images():
+    start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
+    end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
+    user_images = []
+
+    user_id = request.vars.user_id if request.vars.user_id is not None else auth.user.id
+    image_url = db(db.user_images.created_by == user_id).select(db.user_images.ALL, orderby=~db.user_images.created_on)
+
+    for i, r in enumerate(image_url):
+        if i < end_idx - start_idx:
+            img = dict(
+                created_on=r.created_on,
+                created_by=r.created_by,
+                image_url=r.image_url,
+            )
+            user_images.append(img)
+    return response.json(dict(
+        user_images=user_images,
+    ))
+
+
+@auth.requires_signature()
+def get_users():
+    users = []
+    for r in db(db.auth_user.id > 0).select():
+        user = dict(
+            first_name=r.first_name,
+            last_name=r.last_name,
+            email=r.email,
+            user_id=r.id,
+        )
+        users.append(user)
+    return response.json(dict(
+        users=users,
+    ))

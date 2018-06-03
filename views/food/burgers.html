@@ -3,11 +3,9 @@
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var memos_url = "{{=URL('api', 'get_memos')}}"
-    var add_memo_url = "{{=URL('api', 'add_memo', user_signature=True)}}"
-    var del_memo_url = "{{=URL('api', 'del_memo', user_signature=True)}}"
-    var toggle_public_url = "{{=URL('api', 'toggle_public', user_signature=True)}}"
-    var edit_memo_url = "{{=URL('api', 'edit_memo', user_signature=True)}}"
+    var user_images_url = "{{=URL('api', 'get_user_images', user_signature=True, hash_vars=False)}}";
+    var add_image_url = "{{=URL('api', 'add_image', user_signature=True)}}";
+    var get_user_url = "{{=URL('api', 'get_users', user_signature=True)}}";
 </script>
 {{end}}
 
@@ -15,148 +13,60 @@
 
     <div id="vue-div" class="display:none">
         <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
+        <div class="container padded">
 
-        <div class="button_bar">
-            <button v-if="!is_adding_memo" class="btn"
-                    v-on:click="add_memo_button()"
-                    :disabled="!logged_in"
-                    v-bind:class="{'disabled': !logged_in}">
-                <i class="fa fa-plus"></i> Add Memo
-            </button>
-            <button v-if="is_adding_memo" class="btn " v-on:click="add_memo_button()">
-                <i class="fa fa-times"></i> Cancel
-            </button>
-        </div>
+            <!--<img v-if="show_img" v-bind:src="img_url" />-->
+        {{if auth.user is not None:}}
+            <div class="user_space">
+                <!-- Right part of the page -->
 
-        <!-- Form to add memos -->
-        <div v-if="is_adding_memo" id="add_memo_div">
-            <form action="#" v-on:submit.prevent="add_memo" class="form-horizontal" enctype="multipart/form-data"
-                  method="post">
-                <div class="form-group" id="no_table_title__row">
-                    <div>
-                        <input class="form-control string" id="no_table_title" name="name" type="text"
-                               v-model="form_name" placeholder="{{=auth.user.first_name}}"/>
-                        <span class="help-block"></span>
-                    </div>
-                </div>
-                <div class="form-group" id="no_table_title__row">
-                    <div>
-                        <input class="form-control string" id="no_table_title" name="title" type="text"
-                               v-model="form_category" placeholder="Category"/>
-                        <span class="help-block"></span>
-                    </div>
-                </div>
-                <div class="form-group" id="no_table_memo__row">
-                    <div><input class="form-control string" id="no_table_memo" name="memo" type="text"
-                                v-model="form_memo" placeholder="Memo"/>
-                        <span class="help-block"></span>
-                    </div>
-                </div>
-                <div class="form-group" id="submit_record__row">
-                    <div>
-                        <input class="btn btn-primary" id="add_memo_submit" type="submit" value="Submit"/>
-                    </div>
-                </div>
-            </form>
-        </div>
+                <div class="image_container">
 
-        <!-- Memos for database -->
-        <a href="{{=URL('food', 'burgers')}}">
-            <div v-for="memo in memos" class="memo">
-                <div class="text-left memo-content">
+                    <div class="container">
 
-                    <!-- If we are editing the memo (i.e. the edit button was pressed) and the edit_id == the memo.id in the database, then display the textarea form for editting-->
-                    <div v-if="is_editing_memo && edit_id==memo.id">
-
-                        <!-- Display memo title from the database that will be editted -->
-                        <div class="form-group" id="no_table_content__row">
-                            <div>
-                                <textarea class="form-control string" v-model="edit_title_content = memo.title"
-                                          placeholder="Title" type="text"></textarea>
-                                <span class="help-block"></span>
+                        <div v-for="users in users" class="lifted padded quarter rightspace">
+                            <div v-on:click="get_user_images(users.user_id)">${users.first_name} ${users.last_name}
+                                <div v-for="user_images in user_images">
+                                    <img v-bind:src="user_images.image_url" height="200px" width="200px" class="padded">
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Display memo content from the database that will be editted -->
-                        <div class="form-group" id="no_table_content__row">
-                            <div>
-                                <textarea class="form-control string" v-model="edit_memo_content = memo.memo"
-                                          placeholder="Memo" type="text"></textarea>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
 
-                        <!-- The cancel and submit buttons for editing a memo -->
-                        <div class="form-group row edit-buttons" id="submit_record__row">
-                            <div class="col-md-6">
-                                <button v-if="is_editing_memo" class="btn btn-warning btn-sm cancel-button"
-                                        v-on:click="cancel_edit(memo._idx)" type="button">
-                                    Cancel
-                                </button>
-                            </div>
-
-                            <div class="col-md-6">
-                                <button v-if="is_editing_memo" class="btn btn-primary btn-sm memo-edit-button"
-                                        v-on:click="edit_memo_submit()" type="submit">
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- If we are not editing a memo, or if we are but the edit_id is not equal to current memo's id, then display the title and memo only -->
-                    <div v-if="!is_editing_memo || (is_editing_memo && edit_id != memo.id)">
-                        <div class="memo_title">${memo.driver_name}</div>
-                        <div class="memo_content">${memo.memo}</div>
-                    </div>
-                </div>
-
-
-                <!-- Buttons for individual memo -->
-                <div class="button_list">
-                    <div class="buttons">
-                    {{if auth.user:}}
-                        <!-- if the memo belongs to the logged-in user, show all button options -->
-                        <div v-if="memo.user_email == '{{=auth.user.email}}'">
-                            <!-- Toggle is_public button -->
-                            <a class="btn rounded" v-on:click="toggle_public_button(memo._idx)">
-                                <i v-bind:class="{'fa fa-user': !memo.is_public, 'fa fa-users': memo.is_public}"></i>
-                            </a>
-                            <a class="btn rounded" v-on:click="edit_memo(memo._idx)"><i
-                                    class="fa fa-edit fa-lg"></i></a>
-                            <a class="btn rounded" v-on:click="delete_memo(memo._idx)"><i class="fa fa-trash fa-lg"></i></a>
-                        </div>
-
-                        <!-- If memo does not belong to user but it is public -->
-                        <div v-if="!(memo.user_email == '{{=auth.user.email}}')">
-                            <a class="btn rounded"
-                               :disabled="!logged_in"
-                               v-bind:class="{'disabled': !logged_in}"
-                               style="background-color:grey; pointer-events: none; cursor: default;">
-                                <i class="fa fa-users"></i></a>
-                        </div>
-                    {{else:}}
-                        <!-- Else, no one is logged in, so display public memos only -->
-                        <div>
-                            <a class="btn rounded"
-                               :disabled="!logged_in"
-                               v-bind:class="{'disabled': !logged_in}"
-                               style="background-color:grey; pointer-events: none; cursor: default;">
-                                <i class="fa fa-users"></i></a>
-                        </div>
-                    {{pass}}
                     </div>
                 </div>
             </div>
-        </a>
 
-        <!-- Has more than 10 memos -->
-        <div v-if="has_more" class="show_more">
-            <button class="btn btn-default rounded" v-on:click="get_more()">
-                <i class="fa fa-ellipsis-h"></i>
-                Load more
-            </button>
+            <!--
+            <div class="image_space">
+
+                <div v-if="self_page">
+                    <div id="uploader_div" style="display:none">
+                        Upload an image file: <input id="file_input" type="file" v-on:change="upload_file"
+                                                     accept="image/jpeg">
+                    </div>
+                        <button v-if="!is_uploading" v-on:click="open_uploader"><i class="fa fa-plus"></i></button>
+                        <button v-if="is_uploading" v-on:click="close_uploader">Cancel</button>
+                </div>
+
+                <div class="image_container">
+
+                    <ul class="container">
+
+                        <li v-for="user_images in user_images" class="card lifted padded quarter">
+                            <img v-bind:src="user_images.image_url" height="200px" width="200px" class="padded">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            -->
+        {{else:}}
+            <h2>Please log into an account or sign up.</h2>
+        {{pass}}
+
         </div>
+
     </div>
 
 </div>

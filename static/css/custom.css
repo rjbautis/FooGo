@@ -6,3 +6,69 @@ a:not(.btn):not(.noeffect):after {background-color:#26a69a}
 .progress .indeterminate {background-color:#26a69a}
 .tags > span {background-color: #26a69a}
 .tags.dismissible > span.off:hover {background-color:#26a69a}
+
+.card {perspective: 500px; max-width:100%}
+.card>div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+.card:hover>div {
+  transform: rotateY( 180deg ) ;
+  transition: transform 0.5s;
+}
+.card>div>div {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+}
+.card>div>div:nth-child(2) {
+  transform: rotateY( 180deg );
+}
+
+.lifted {box-shadow:5px 5px 10px #666}
+
+.padded {padding:10px 20px}
+
+/*** grid ***/
+.container {margin-right:-20px}
+.container>.quarter, .container>.half, .container>.third, .container>.twothirds, .container>.threequarters {display:inline-block; padding: 0 20px 0 0; vertical-align:top}
+.container>.fill{display: inline-block; padding-right: 20px; margin-right:-10px}
+.container img, .container video {max-width:100%}
+.max900 {margin-left:auto; margin-right:auto}
+
+@media all and (min-width:800px) {
+  .max900 {max-width:900px}
+  .quarter {width:25%; margin-right:-5px}
+  .half {width:50%; margin-right:-10px}
+  .third {width:33.33%; margin-right:-6.66px}
+  .twothirds {width:66.66%; margin-right:-13.33px}
+  .threequarters {width:75%; margin-right:-15px}
+}
+@media all and (min-width:600px) and (max-width:799px) {
+  .quarter.compressible {width:25%; margin-right:-5px}
+  .half.compressible {width:50%; margin-right:-10px}
+  .threequarters.compressible {width:75%; margin-right:-15px}
+  .quarter:not(.compressible), .half:not(.compressible), .threequarters:not(.compressible) {width:100%; margin-right:-20px}
+  .third {width:33.33%; margin-right:-6.66px}
+  .twothirds {width:66.66%; margin-right:-13.33px}
+  label.quarter:not(.compressible).right, label.half:not(.compressible).right, label.threequarters:not(.compressible).right   {float:left; text-align:left}
+}
+@media all and (max-width:599px) {
+  .quarter:not(.compressible), .half:not(.compressible), .third:not(.compressible), .twothirds:not(.compressible), .threequarters:not(.compressible) {width:100%;}
+  label.quarter:not(.compressible).right, label.half:not(.compressible).right, label.threequarters:not(.compressible).right,
+  label.third:not(.compressible).right, label.twothirds:not(.compressible).right   {float:left; text-align:left}
+  .quarter.compressible {width:25%; margin-right:-5px}
+  .half.compressible {width:50%; margin-right:-10px}
+  .third.compressible {width:33.33%; margin-right:-6.66px}
+  .twothirds.compressible {width:66.66%; margin-right:-13.33px}
+  .threequarters.compressible {width:75%; margin-right:-15px}
+}
+
+.rightspace {
+  margin-right: 40px;
+}
