@@ -16,6 +16,8 @@ def get_user_email():
 db.define_table('checklist',
                 Field('user_email', default=get_user_email()),
                 Field('food_location', default="Santa Cruz, CA"),
+                Field('latitude','double', readable=False),
+                Field('longitude','double', reable=False),
                 Field('driver_name', 'text'),
                 Field('memo', 'text'),
                 Field('category'),

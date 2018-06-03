@@ -8,7 +8,7 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 import json
-
+from gluon.tools import geocode
 def index():
     """
     example action using the internationalization operator T and flash
@@ -27,6 +27,17 @@ def profile():
     user = User(me)
 
     return locals()
+def map():
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
+
+def geo(form):
+
+    (form.vars.longitude,form.vars.latitude)=geocode(form.vars.my_city+', USA')
 
 def user_bar():
     action = '/user'
@@ -46,8 +57,15 @@ def user_bar():
 def add():
     """Adds a checklist for the"""
     form = SQLFORM(db.checklist)
+    p = db(query).select().first()
+
     if form.process().accepted:
         session.flash = T("Checklist added.")
+        p.longitude = ""
+        p.latitude = ""
+        (p.longitude,p.latitude) = geocode(form.vars.food_location + ', United States')
+        p.updatedon = datetime.datetime.utcnow()
+        p.update_record()
         redirect(URL('default','index'))
     elif form.errors:
         session.flash = T('Please correct the info')

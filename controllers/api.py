@@ -30,6 +30,10 @@ def get_memos():
                 driver_name = r.driver_name,
                 memo = r.memo,
                 user_email = r.user_email,
+                food_location = r.food_location,
+                longitude = r.longitude,
+                latitude = r.latitude,
+                category = r.category,
                 is_public = r.is_public
             )
             memos.append(t)
@@ -69,10 +73,13 @@ def toggle_public():
 # Add new memos to the checklist
 @auth.requires_signature()
 def add_memo():
+    #(Plongitude,Platitude) = geocode(request.vars.food_location + ', United States')
     t_id = db.checklist.insert(
         driver_name = request.vars.name,
         memo = request.vars.memo,
         category = request.vars.category,
+        latitude = -122.030796,
+        longitude = 36.974117,
     )
     t = db.checklist(t_id)
     return response.json(dict(name=t))
