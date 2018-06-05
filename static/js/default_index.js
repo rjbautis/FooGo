@@ -84,6 +84,8 @@ var app = function() {
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
+                console.log(data);
+
                 self.vue.listings.unshift(data.title);
                 enumerate(self.vue.listings);
             });
@@ -145,6 +147,76 @@ var app = function() {
 
 
 
+    /**************************************** Comments ********************************************/
+
+    self.get_listing_comments = function(listing_idx) {
+         // Return a json containing the database information
+        console.log("the current listing is " + self.vue.listings[listing_idx].id);
+        $.getJSON(get_listing_comments_url,
+            {
+                parent_listing_id: self.vue.listings[listing_idx].id,
+            },
+
+            function(data) {
+                self.vue.comments = data.comments;
+
+                // Call enumerate function such that the array of listings is reordered by idx
+                enumerate(self.vue.comments);
+        });
+    }
+
+        // Toggles add button
+    self.add_comment_button = function () {
+        self.vue.is_adding_comment = !self.vue.is_adding_comment;
+    };
+
+    self.add_comment = function(listing_idx) {
+        self.vue.is_adding_comment = !self.vue.is_adding_comment;
+        self.vue.add_comment_id = self.vue.listings[listing_idx].id;
+
+        self.get_listing_comments(listing_idx);
+    }
+
+
+    self.add_comment_submit = function(listing_idx) {
+        console.log(self.vue.listings[listing_idx].id);
+        console.log(self.vue.form_commenter_name);
+        console.log(self.vue.form_comment);
+        $.post(add_comment_url,
+            {
+                parent_listing_id: self.vue.listings[listing_idx].id,
+                commenter_name: self.vue.form_commenter_name,
+                written_comment: self.vue.form_comment,
+            },
+            function (data) {
+                $.web2py.enableElement($("#add_comment_submit"));
+                console.log(data);
+                self.vue.comments.unshift(data.comments);
+                enumerate(self.vue.comments);
+                // Reset comment fields after submission
+                self.vue.form_comment = null;
+                self.vue.form_commenter_name = null;
+            });
+    }
+
+        // Deletes listing from the webpage (and the database using del_memo_url)
+    // Uses listing_idx (instantiated by emuerate() function for all listings displayed) instead of memo.id (from database)
+    self.delete_comment = function(comment_idx) {
+        console.log(self.vue.comments[comment_idx].id);
+        $.post(del_comment_url,
+            {
+                comment_id: self.vue.comments[comment_idx].id
+            },
+            function () {
+                self.vue.comments.splice(comment_idx, 1);
+                // if listings length is 10 or less, then we don't need to show loading button
+                enumerate(self.vue.comments);
+            }
+        );
+    };
+
+
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -162,7 +234,13 @@ var app = function() {
             edit_driver_name_content: null,
             edit_post_content: null,
             original_driver_name: null,
-            original_post: null
+            original_post: null,
+
+            comments: [],
+            is_adding_comment: false,
+            add_comment_id: 0,
+            form_commenter_name: null,
+            form_comment: null,
         },
         methods: {
             add_listing_button: self.add_listing_button,
@@ -172,6 +250,12 @@ var app = function() {
             edit_listing: self.edit_listing,
             edit_listing_submit: self.edit_listing_submit,
             cancel_edit: self.cancel_edit,
+
+            get_listing_comments: self.get_listing_comments,
+            add_comment_submit: self.add_comment_submit,
+            add_comment: self.add_comment,
+            add_comment_button: self.add_comment_button,
+            delete_comment: self.delete_comment,
         }
 
     });

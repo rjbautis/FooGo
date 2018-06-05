@@ -8,6 +8,10 @@
   var del_listing_url = "{{=URL('api', 'del_listing', user_signature=True)}}"
   var edit_listing_url = "{{=URL('api', 'edit_listing', user_signature=True)}}"
   var this_category = "pasta"
+
+  var get_listing_comments_url = "{{=URL('api', 'get_listing_comments')}}"
+  var add_comment_url = "{{=URL('api', 'add_comment')}}"
+  var del_comment_url = "{{=URL('api', 'del_comment')}}"
 </script>
 {{end}}
 
@@ -67,7 +71,7 @@
                   <!-- Display listing title from the database that will be editted -->
                   <div class="form-group" id="no_table_content__row">
                       <div>
-                          <textarea class="form-control string" v-model="edit_driver_name_content = listing.driver_name" placeholder="Title" type="text" ></textarea>
+                          <textarea class="form-control string" v-model="edit_driver_name_content = listing.driver_name" placeholder="Your Name" type="text" ></textarea>
                           <span class="help-block"></span>
                       </div>
                   </div>
@@ -75,7 +79,7 @@
                   <!-- Display listing content from the database that will be editted -->
                   <div class="form-group" id="no_table_content__row">
                       <div>
-                          <textarea class="form-control string" v-model="edit_post_content = listing.post" placeholder="listing" type="text" ></textarea>
+                          <textarea class="form-control string" v-model="edit_post_content = listing.post" placeholder="Post" type="text" ></textarea>
                           <span class="help-block"></span>
                       </div>
                   </div>
@@ -94,7 +98,6 @@
                           </button>
                       </div>
                   </div>
-
                 </div>
             </div>
 
@@ -111,30 +114,90 @@
           {{if auth.user:}}
             <!-- if the listing belongs to the logged-in user, show all button options -->
             <div v-if="listing.user_email == '{{=auth.user.email}}'">
-              <!-- Toggle is_public button -->
-
+              <!-- Edit listing -->
               <a class="btn rounded" v-on:click="edit_listing(listing._idx)"><i class="fa fa-edit fa-lg"></i></a>
               <a class="btn rounded" v-on:click="delete_listing(listing._idx)"><i class="fa fa-trash fa-lg"></i></a>
+              <a class="btn rounded" v-on:click="add_comment(listing._idx)"><i class="fa fa-edit fa-plus"></i> Comment </a>
             </div>
 
-            <!-- If listing does not belong to user but it is public -->
-            <div v-if="!(listing.user_email == '{{=auth.user.email}}')">
-              <a class="btn rounded"
-                 :disabled="!logged_in"
-                 v-bind:class="{'disabled': !logged_in}"
-                 style="background-color:grey; pointer-events: none; cursor: default;">
-                <i class="fa fa-users"></i></a>
+            <div v-else>
+              <a class="btn rounded" v-on:click="add_comment(listing._idx)"><i class="fa fa-edit fa-plus"></i> Comment </a>
             </div>
+
           {{else:}}
-          <!-- Else, no one is logged in, so display public listings only -->
+          <!-- Else, no one is logged in, so display nothing only -->
             <div>
-              <a class="btn rounded"
-                 :disabled="!logged_in"
-                 v-bind:class="{'disabled': !logged_in}"
-                 style="background-color:grey; pointer-events: none; cursor: default;">
-                <i class="fa fa-users"></i></a>
+              <a class="btn rounded" v-on:click="add_comment(listing._idx)"><i class="fa fa-edit fa-plus"></i> Comment </a>
             </div>
           {{pass}}
+          </div>
+        </div>
+
+        <div class="text-left comment-content">
+          <div v-if="is_adding_comment && add_comment_id==listing.id">
+
+            <!-- Add Comment Form -->
+            {{if auth.user:}}
+            <div class="container">
+              <br>
+
+              <!-- Display listing title from the database that will be editted -->
+              <div class="form-group" id="no_table_content__row">
+                <div>
+                  <textarea class="form-control string" v-model="form_commenter_name" placeholder="Your Name" type="text" ></textarea>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              <!-- Display listing content from the database that will be editted -->
+              <div class="form-group" id="no_table_content__row">
+                <div>
+                  <textarea class="form-control string" v-model="form_comment" placeholder="Comment" type="text" ></textarea>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+
+              <!-- The cancel and submit buttons for editing a listing -->
+              <div class="form-group row edit-buttons" id="submit_record__row">
+                <div class="col-md-6">
+                  <button v-if="is_adding_comment" class="btn btn-warning btn-sm cancel-button" v-on:click="add_comment_button()" type="button">
+                    Cancel
+                  </button>
+                </div>
+
+                <div class="col-md-6">
+                  <button v-if="is_adding_comment" class="btn btn-primary btn-sm listing-edit-button" id="add_comment_submit" v-on:click="add_comment_submit(listing._idx)" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+            {{else:}}
+
+            {{pass}}
+            <!-- Display comments -->
+
+            <div class="container padded">
+              <div v-for="comment in comments">
+                <div class="memo">
+                  <div>${comment.commenter_name}</div>
+                  <div>${comment.written_comment}</div>
+                  <div class="button_list">
+                    <div class="buttons">
+                    {{if auth.user:}}
+                      <!-- if the listing belongs to the logged-in user, show all button options -->
+                      <div v-if="comment.user_email == '{{=auth.user.email}}'">
+                        <!-- Edit listing -->
+                        <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i class="fa fa-trash fa-lg"></i></a>
+                      </div>
+                    {{else:}}
+                    {{pass}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

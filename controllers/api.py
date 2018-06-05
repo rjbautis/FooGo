@@ -6,6 +6,11 @@ def get_listings():
     listings = []
     has_more = False
 
+
+    # db.comments.truncate()
+
+    logger.info(db().select(db.comments.ALL))
+
     # If user is logged in, return listings belonging to him as well as public ones
     if auth.user is not None:
         rows = db(db.checklist.category == request.vars.category).select(db.checklist.ALL, orderby=~db.checklist.created_on, limitby=(start_idx, end_idx + 1))
@@ -71,6 +76,10 @@ def add_listing():
 def del_listing():
     # "Deletes a memo from the table"
     db(db.checklist.id == request.vars.listing_id).delete()
+
+    # deletes all comments associated with the listing
+    db(db.comments.parent_listing_id == request.vars.listing_id).delete()
+
     return "ok"
 
 
@@ -88,3 +97,42 @@ def edit_listing():
             post = request.vars.post_content,
         )
     return dict()
+
+
+def get_listing_comments():
+    comments = []
+    rows = db(db.comments.parent_listing_id == request.vars.parent_listing_id).select(db.comments.ALL, orderby=~db.comments.created_on)
+
+    logger.info("inside get_listing_comments")
+
+    for i, r in enumerate(rows):
+
+        c = dict(
+            id = r.id,
+            parent_listing_id = r.parent_listing_id,
+            commenter_name = r.commenter_name,
+            written_comment = r.written_comment,
+            created_on = r.created_on,
+            user_email = r.user_email,
+        )
+        comments.append(c)
+
+    return response.json(dict(
+        comments=comments
+    ))
+
+
+def add_comment():
+    c_id = db.comments.insert(
+        parent_listing_id = request.vars.parent_listing_id,
+        commenter_name = request.vars.commenter_name,
+        written_comment = request.vars.written_comment,
+    )
+    c = db.comments(c_id)
+    return response.json(dict(comments=c))
+
+
+def del_comment():
+    db(db.comments.id == request.vars.comment_id).delete()
+
+    return "ok"
