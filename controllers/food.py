@@ -1,4 +1,4 @@
-# food.py controller
+# food.py controller for views/food
 
 import json
 
