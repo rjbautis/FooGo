@@ -80,6 +80,7 @@ var app = function() {
             {
                 driver_name: self.vue.form_driver_name,
                 post: self.vue.form_post,
+                food_location: self.vue.form_food_location,
                 category: this_category,
             },
             function (data) {
@@ -228,6 +229,7 @@ var app = function() {
             has_more: false,
             form_driver_name: null,
             form_post: null,
+            form_food_location: null,
             is_adding_listing: false,
             is_editing_listing: false,
             edit_id: 0,

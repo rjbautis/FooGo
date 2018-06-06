@@ -1,3 +1,5 @@
+import json
+from gluon.tools import geocode
 # Here go your api methods.
 
 def get_listings():
@@ -27,9 +29,14 @@ def get_listings():
                 is_public = r.is_public,
                 created_on=r.created_on,
                 driver_name = r.driver_name,
+                food_location = r.food_location,
+                longitude = r.longitude,
+                latitude = r.latitude,
                 post = r.post,
             )
+            #logger.info(t)
             listings.append(t)
+
         else:
             has_more = True
 
@@ -63,10 +70,16 @@ def toggle_public():
 # Add new listings to the checklist
 @auth.requires_signature()
 def add_listing():
+    (plongitude, platitude) = geocode(request.vars.food_location + ', United States')
+    logger.info(platitude)
+    logger.info(plongitude)
     t_id = db.checklist.insert(
         driver_name = request.vars.driver_name,
         post = request.vars.post,
+        food_location = request.vars.food_location,
         category = request.vars.category,
+        longitude = plongitude,
+        latitude = platitude,
     )
     t = db.checklist(t_id)
     return response.json(dict(title=t))

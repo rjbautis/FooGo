@@ -40,7 +40,13 @@ def user_bar():
         bar = SPAN(' ', login, ' | ', register, ' | ', lost_password, _class='auth_navbar')
     return bar
 
+def map():
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
 
+    return locals()
 def add():
     """Adds a checklist for the"""
     form = SQLFORM(db.checklist)

@@ -13,6 +13,9 @@ if request.global_settings.web2py_version < "2.14.1":
 # app configuration made easy. Look inside private/appconfig.ini
 from gluon.contrib.appconfig import AppConfig
 
+
+GOOGLEMAP_KEY="ABQIAAAAT5em2PdsvF3z5onQpCqv0RRbmBRVqcetsYYPAZkdVkJ1U_-f7hQyRsL4C5GpXpg29_Qza9VuE2zX2w"
+
 # once in production, remove reload=True to gain full speed
 myconf = AppConfig(reload=True)
 
