@@ -40,7 +40,8 @@ db.define_table('comments',
                 Field('commenter_name', 'text'),
                 Field('written_comment', 'text'),
                 Field('user_email', default=get_user_email()),
-                Field('created_on', 'datetime', default=request.now))
+                Field('created_on', 'datetime', default=request.now),
+                Field('showQR', 'boolean', default=False))
 
 
 

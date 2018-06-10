@@ -12,6 +12,7 @@
     var get_listing_comments_url = "{{=URL('api', 'get_listing_comments')}}"
     var add_comment_url = "{{=URL('api', 'add_comment')}}"
     var del_comment_url = "{{=URL('api', 'del_comment')}}"
+    var toggleQR_url = "{{=URL('api', 'toggle_QR', user_signature=True)}}"
 
     var add_profile_picture_url = "{{=URL('api', 'add_profile_picture_url', user_signature=True)}}";
 </script>
@@ -227,9 +228,12 @@
                                                 <!-- Edit listing -->
                                                 <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i
                                                         class="fa fa-trash fa-lg"></i></a>
-                                                <a v-if="!see_qr" v-on:click="see_qrcode()" class="btn rounded"><i
+                                                <a v-if="!comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
                                                         class="fa fa-qrcode"></i></a>
-                                                <img v-if="see_qr" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                                <a v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
+                                                        class="fa fa-cart"></i></a>
+                                                <img v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)"
+                                                     v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}

@@ -198,8 +198,15 @@ var app = function() {
         );
     };
 
-    self.see_qrcode = function() {
-        self.vue.see_qr = !self.vue.see_qr;
+    self.toggle_QR = function(comment_idx) {
+        console.log("in toggle");
+        var comment = self.vue.comments[comment_idx];
+        comment.showQR = !comment.showQR;
+        console.log(comment.showQR);
+        $.post(toggleQR_url,
+            {comment_id: comment.id},
+            function () {}
+            )
     };
 
 
@@ -229,7 +236,6 @@ var app = function() {
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
-            see_qr: false,
         },
         methods: {
             add_listing_button: self.add_listing_button,
@@ -244,7 +250,7 @@ var app = function() {
             add_comment: self.add_comment,
             add_comment_button: self.add_comment_button,
             delete_comment: self.delete_comment,
-            see_qrcode: self.see_qrcode,
+            toggle_QR: self.toggle_QR,
         }
 
     });

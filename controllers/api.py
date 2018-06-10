@@ -160,6 +160,13 @@ def del_comment():
     return "ok"
 
 
+@auth.requires_signature()
+def toggle_QR():
+    t = db.comments(request.vars.comment_id)
+    t.update_record(showQR=not t.showQR)
+    return "ok"
+
+
 # Profile Picture
 
 @auth.requires_signature()
@@ -173,5 +180,6 @@ def add_profile_picture_url():
         profile_picture_url=request.vars.profile_picture_url
 
     )))
+
 
 
