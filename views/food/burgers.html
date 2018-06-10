@@ -1,6 +1,7 @@
 {{extend 'layout.html'}}
 
 {{block head}}
+
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
     var listings_url = "{{=URL('api', 'get_listings')}}"
@@ -17,6 +18,7 @@
 
     var add_profile_picture_url = "{{=URL('api', 'add_profile_picture_url', user_signature=True)}}";
 </script>
+
 {{end}}
 
 <div class="main_content">
@@ -114,7 +116,7 @@
                         </div>
                     </div>
 
-                    <img class="card-img-top" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                    <img class="img-circle vertical_center" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
 
                     <!-- If we are not editing a listing, or if we are but the edit_id is not equal to current listing's id, then display the title and listing only -->
                     <div class="card-body" v-if="!is_editing_listing || (is_editing_listing && edit_id != listing.id)">
@@ -205,8 +207,13 @@
                         <div class="container padded">
                             <div v-for="comment in comments">
                                 <div class="memo">
-                                    <div>${comment.commenter_name}</div>
-                                    <div>${comment.written_comment}</div>
+                                    <div class="comment_picture">
+                                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                    </div>
+                                    <div class="comment_content">
+                                        <div>${comment.commenter_name}</div>
+                                        <div>${comment.written_comment}</div>
+                                    </div>
                                     <div class="button_list">
                                         <div class="buttons">
                                         {{if auth.user:}}
