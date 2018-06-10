@@ -71,6 +71,7 @@ import datetime
 auth.settings.extra_fields['auth_user'] = [
     Field('CruzID', label= 'Paypal Link'),
     Field('VenmoID', label = 'Venmo ID'),
+    Field('VenmoQR', 'upload', label='Venmo QR Code'),
     Field('Driver', 'boolean'),
     Field('HungryStudent', 'boolean', label='Hungry Student'),
     Field('profile_picture', 'upload', label='Profile Picture'),
