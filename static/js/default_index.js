@@ -198,6 +198,9 @@ var app = function() {
         );
     };
 
+    self.see_qrcode = function() {
+        self.vue.see_qr = !self.vue.see_qr;
+    };
 
 
     // Complete as needed.
@@ -220,12 +223,13 @@ var app = function() {
             original_post: null,
             image_url: null,
 
+
             comments: [],
             is_adding_comment: false,
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
-
+            see_qr: false,
         },
         methods: {
             add_listing_button: self.add_listing_button,
@@ -240,6 +244,7 @@ var app = function() {
             add_comment: self.add_comment,
             add_comment_button: self.add_comment_button,
             delete_comment: self.delete_comment,
+            see_qrcode: self.see_qrcode,
         }
 
     });

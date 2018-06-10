@@ -72,7 +72,7 @@
         <br>
         <div class="container card-columns" id="container">
             <!-- Listings for database -->
-            <div v-for="listing in listings" class="card lifted" >
+            <div v-for="listing in listings" class="card" >
 
                 <div class="text-left listing-content">
                     <div class="listing_profile_picture">
@@ -81,7 +81,7 @@
                     <!-- If we are editing the listing (i.e. the edit button was pressed) and the edit_id == the listing.id in the database, then display the textarea form for editting-->
                     <div v-if="is_editing_listing && edit_id==listing.id">
 
-                        <div class="container">
+                        <div class="container">`
                             <br>
 
                             <!-- Display listing title from the database that will be editted -->
@@ -215,8 +215,8 @@
                                         <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
                                     </div>
                                     <div class="comment_content">
-                                        <div>${comment.commenter_name}</div>
-                                        <div>${comment.written_comment}</div>
+                                        <div class="comment_name"><b>${comment.commenter_name}</b></div>
+                                        <div class="comment_text">${comment.written_comment}</div>
                                     </div>
 
                                     <div class="button_list">
@@ -227,6 +227,9 @@
                                                 <!-- Edit listing -->
                                                 <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i
                                                         class="fa fa-trash fa-lg"></i></a>
+                                                <a v-if="!see_qr" v-on:click="see_qrcode()" class="btn rounded"><i
+                                                        class="fa fa-qrcode"></i></a>
+                                                <img v-if="see_qr" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}

@@ -99,21 +99,32 @@ button:disabled:hover {
 }
 
 .comment_image{
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     overflow: hidden;
     border-radius: 50%;
-    float: right;
+    float: left;
 }
 
 .listing_profile_picture {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     overflow: hidden;
     border-radius: 50%;
+    display: block;
+    margin: 10px auto auto auto;
 }
 
 .img-circle {
     width: 100%;
     height: auto;
 }
+
+.card-body {
+    text-align: center;
+}
+
+.comment_content {
+    margin-left: 90px;
+}
+
