@@ -1,48 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Profile</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{=URL('static','css/profile.css')}}"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://use.fontawesome.com/2a89db6bb1.js"></script>
+    <title>Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{=URL('static','css/profile.css')}}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/2a89db6bb1.js"></script>
 </head>
 <body>
 
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+  var add_profile_picture_url = "{{=URL('api', 'add_profile_picture_url', user_signature=True)}}";
+  var add_listing_url = "{{=URL('api', 'add_listing', user_signature=True)}}";
+</script>
+
 {{if auth.user_id:}}
 <div class="container">
-  <div class="profilecard">
-    <a href="{{=URL('default', 'index')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> HOME</a>
-    <h1>
+    <div class="profilecard">
+        <a href="{{=URL('default', 'index')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> HOME</a>
+        <h1>
         {{=user.first_name}} {{=user.last_name}}'s profile
-          <small>
-               <a href="{{=URL('default', 'user', args=['profile'])}}">
-                      <i class="fa fa-cog" aria-hidden="true"></i>
-              </a>
+            <small>
+                <a href="{{=URL('default', 'user', args=['profile'])}}">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                </a>
             </small>
         </h1>
 
-    <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#main">Profile Info</a></li>
-    </ul>
+        <ul class="nav nav-tabs">
+            <li class="nav-item active">
+                <a data-toggle="tab" href="#main">Profile Info</a>
+            </li>
+            <!--
+            <li class="nav-item">
+                <a data-toggle="tab" href="#profile_picture">Picture</a>
+            </li>
+            -->
+        </ul>
 
-    <div class="tab-content">
-      <div id="main" class="tab-pane fade in active">
-        <p>{{=crud.read(db.auth_user,user)}}</p>
-      </div>
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="main">
+                <p>{{=crud.read(db.auth_user,user)}}</p>
+            </div>
+            <!--
+            <div class="tab-pane fade in" id="profile_picture">
+                <div id="vue-div" class="display:none">
+                    <div>
+                        <div id="uploader_div" style="display:none">
+                            Upload a Profile Picture: <input id="file_input" type="file" accept="image/jpeg">
+                        </div>
+                        <button v-if="is_uploading" v-on:click="upload_picture">Submit</button>
+                        <button v-if="!is_uploading" v-on:click="open_uploader"><i class="fa fa-plus"></i></button>
+                        <button v-if="is_uploading" v-on:click="close_uploader">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            -->
 
-
+        </div>
     </div>
-  </div>
 </div>
 {{else:}}
 <div class="profilecard">
-  <h3 align="center">Please log in <a href="{{=URL('default', 'user/login')}}">here</a>
-  or <a href="{{=URL('default', 'user/register')}}">sign up here</a>.
-  </h3>
+    <h3 align="center">Please log in <a href="{{=URL('default', 'user/login')}}">here</a>
+        or <a href="{{=URL('default', 'user/register')}}">sign up here</a>.
+    </h3>
 </div>
 {{pass}}
 </body>

@@ -20,6 +20,8 @@ def get_listings():
     else:
         rows = db(db.checklist.category == request.vars.category).select(db.checklist.ALL, orderby=~db.checklist.created_on, limitby=(start_idx, end_idx + 1))
 
+    logger.info(rows)
+
     # Append only the first ten listings to the list
     for i, r in enumerate(rows):
         if i < end_idx - start_idx:
@@ -33,6 +35,7 @@ def get_listings():
                 longitude = r.longitude,
                 latitude = r.latitude,
                 post = r.post,
+                profile_picture_url = r.profile_picture_url,
             )
             #logger.info(t)
             listings.append(t)
@@ -80,6 +83,7 @@ def add_listing():
         category = request.vars.category,
         longitude = plongitude,
         latitude = platitude,
+        profile_picture_url = request.vars.profile_picture_url,
     )
     t = db.checklist(t_id)
     return response.json(dict(title=t))
@@ -149,3 +153,20 @@ def del_comment():
     db(db.comments.id == request.vars.comment_id).delete()
 
     return "ok"
+
+
+# Profile Picture
+
+@auth.requires_signature()
+def add_profile_picture_url():
+    profile_picture_id = db.checklist.insert(
+        profile_picture_url=request.vars.profile_picture_url
+    )
+    logger.info(db().select(db.checklist.ALL))
+    return response.json(dict(checklist=dict(
+        #id=profile_picture_id,
+        profile_picture_url=request.vars.profile_picture_url
+
+    )))
+
+

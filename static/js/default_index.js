@@ -82,6 +82,7 @@ var app = function() {
                 post: self.vue.form_post,
                 food_location: self.vue.form_food_location,
                 category: this_category,
+                profile_picture_url: curr_user_profile,
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -89,7 +90,9 @@ var app = function() {
 
                 self.vue.listings.unshift(data.title);
                 enumerate(self.vue.listings);
+                self.vue.is_adding_listing = false;
             });
+        //console.log(add_profile_picture_url);
     };
 
     // Makes jquery api call to edit_listing_url with the updated/edited driver_name and post content
@@ -164,7 +167,7 @@ var app = function() {
                 // Call enumerate function such that the array of listings is reordered by idx
                 enumerate(self.vue.comments);
         });
-    }
+    };
 
         // Toggles add button
     self.add_comment_button = function () {
@@ -176,7 +179,7 @@ var app = function() {
         self.vue.add_comment_id = self.vue.listings[listing_idx].id;
 
         self.get_listing_comments(listing_idx);
-    }
+    };
 
 
     self.add_comment_submit = function(listing_idx) {
@@ -198,9 +201,9 @@ var app = function() {
                 self.vue.form_comment = null;
                 self.vue.form_commenter_name = null;
             });
-    }
+    };
 
-        // Deletes listing from the webpage (and the database using del_memo_url)
+    // Deletes listing from the webpage (and the database using del_memo_url)
     // Uses listing_idx (instantiated by emuerate() function for all listings displayed) instead of memo.id (from database)
     self.delete_comment = function(comment_idx) {
         console.log(self.vue.comments[comment_idx].id);
@@ -237,12 +240,14 @@ var app = function() {
             edit_post_content: null,
             original_driver_name: null,
             original_post: null,
+            image_url: null,
 
             comments: [],
             is_adding_comment: false,
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
+
         },
         methods: {
             add_listing_button: self.add_listing_button,
@@ -273,3 +278,5 @@ var APP = null;
 // This will make everything accessible from the js console;
 // for instance, self.x above would be accessible as APP.x
 jQuery(function(){APP = app();});
+
+
