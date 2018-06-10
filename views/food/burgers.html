@@ -231,9 +231,9 @@
                                                 <a v-if="!comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
                                                         class="fa fa-qrcode"></i></a>
                                                 <a v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
-                                                        class="fa fa-cart"></i></a>
+                                                        class="fa fa-qrcode"></i></a>
                                                 <img v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)"
-                                                     v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                                     v-bind:src="'/final/default/download/' + listing.venmo_QR_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}

@@ -79,6 +79,7 @@ def add_listing():
             post = request.vars.post,
             category = request.vars.category,
             profile_picture_url = auth.user.profile_picture,
+            venmo_QR_url = auth.user.VenmoQR,
             food_location=request.vars.food_location,
             longitude = plongitude,
             latitude = platitude,
@@ -163,7 +164,9 @@ def del_comment():
 @auth.requires_signature()
 def toggle_QR():
     t = db.comments(request.vars.comment_id)
+    logger.info(request.vars.comment_id)
     t.update_record(showQR=not t.showQR)
+    logger.info(t)
     return "ok"
 
 

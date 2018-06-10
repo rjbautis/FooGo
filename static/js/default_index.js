@@ -65,7 +65,6 @@ var app = function() {
                 post: self.vue.form_post,
                 category: this_category,
                 food_location: self.vue.form_food_location,
-                // profile_picture_url: curr_user_profile,
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -75,7 +74,6 @@ var app = function() {
                 enumerate(self.vue.listings);
                 self.vue.is_adding_listing = false;
             });
-        //console.log(add_profile_picture_url);
     };
 
     // Makes jquery api call to edit_listing_url with the updated/edited driver_name and post content
@@ -199,10 +197,8 @@ var app = function() {
     };
 
     self.toggle_QR = function(comment_idx) {
-        console.log("in toggle");
         var comment = self.vue.comments[comment_idx];
         comment.showQR = !comment.showQR;
-        console.log(comment.showQR);
         $.post(toggleQR_url,
             {comment_id: comment.id},
             function () {}
