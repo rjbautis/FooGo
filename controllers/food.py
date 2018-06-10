@@ -4,11 +4,20 @@ import json
 
 
 def breakfast():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
 
+    return locals()
 
 def burgers():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def desserts():

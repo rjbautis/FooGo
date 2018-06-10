@@ -232,6 +232,7 @@ var app = function() {
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
+
         },
         methods: {
             add_listing_button: self.add_listing_button,

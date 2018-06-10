@@ -117,7 +117,7 @@ button:disabled:hover {
 
 .img-circle {
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 .card-body {
