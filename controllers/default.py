@@ -69,6 +69,27 @@ def user():
     """
     return dict(form=auth())
 
+def user_look_up():
+    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))
+    if form.accepts(request):
+        tokens = form.vars.name.split()
+        query = reduce(lambda a,b:a&b,
+                       [db.auth_user.first_name.contains(k)|db.auth_user.last_name.contains(k) \
+                            for k in tokens])
+        people = db(query).select()
+    else:
+        people = []
+
+    return locals()
+
+def map():
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
+
 
 @cache.action()
 def download():

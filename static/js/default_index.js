@@ -43,7 +43,6 @@ var app = function() {
 
             function(data) {
                 self.vue.listings = data.listings;
-                self.vue.has_more = data.has_more;
                 self.vue.logged_in = data.logged_in;
 
                 // Call enumerate function such that the array of listings is reordered by idx
@@ -51,22 +50,6 @@ var app = function() {
         });
     };
 
-    // Returns the next 10 listings that have not been loaded on the webpage yet
-    self.get_more = function () {
-        console.log("HI");
-        var num_listings = self.vue.listings.length;
-
-        console.log(num_listings);
-
-        // Using the length of the current list of listings, extend the list with the next 10 listings from db
-        $.getJSON(get_listings_url(num_listings, num_listings + 10), function (data) {
-            self.vue.has_more = data.has_more;
-            self.extend(self.vue.listings, data.listings);
-
-            // Call enumerate function such that the new array of listings is reordered by idx
-            enumerate(self.vue.listings);
-        });
-    };
 
     // Toggles add button
     self.add_listing_button = function () {
@@ -81,7 +64,8 @@ var app = function() {
                 driver_name: self.vue.form_driver_name,
                 post: self.vue.form_post,
                 category: this_category,
-                profile_picture_url: curr_user_profile,
+                food_location: self.vue.form_food_location,
+                // profile_picture_url: curr_user_profile,
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -138,10 +122,6 @@ var app = function() {
             },
             function () {
                 self.vue.listings.splice(listing_idx, 1);
-                // if listings length is 10 or less, then we don't need to show loading button
-                if(self.vue.listings.length < 11) {
-                    self.vue.has_more = false;
-                }
                 enumerate(self.vue.listings);
             }
         );
@@ -228,8 +208,8 @@ var app = function() {
         data: {
             listings: [],
             logged_in: false,
-            has_more: false,
             form_driver_name: null,
+            form_food_location: null,
             form_post: null,
             is_adding_listing: false,
             is_editing_listing: false,
@@ -251,7 +231,6 @@ var app = function() {
             add_listing_button: self.add_listing_button,
             add_listing: self.add_listing,
             delete_listing: self.delete_listing,
-            get_more: self.get_more,
             edit_listing: self.edit_listing,
             edit_listing_submit: self.edit_listing_submit,
             cancel_edit: self.cancel_edit,

@@ -1,12 +1,15 @@
 # Here go your api methods.
+import json
+from gluon.tools import geocode
+
 
 def get_listings():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     listings = []
-    has_more = False
 
-
+    # Debugging tool
+    # db.checklist.truncate()
     # db.comments.truncate()
 
     logger.info(db().select(db.comments.ALL))
@@ -30,11 +33,12 @@ def get_listings():
                 created_on=r.created_on,
                 driver_name = r.driver_name,
                 post = r.post,
+                food_location=r.food_location,
+                longitude=r.longitude,
+                latitude=r.latitude,
                 profile_picture_url = r.profile_picture_url,
             )
             listings.append(t)
-        else:
-            has_more = True
 
     # Determine if the user is logged in or not
     logged_in = auth.user is not None
@@ -42,7 +46,6 @@ def get_listings():
     return response.json(dict(
         listings=listings,
         logged_in=logged_in,
-        has_more=has_more
     ))
 
 
@@ -66,12 +69,26 @@ def toggle_public():
 # Add new listings to the checklist
 @auth.requires_signature()
 def add_listing():
-    t_id = db.checklist.insert(
-        driver_name = request.vars.driver_name,
-        post = request.vars.post,
-        category = request.vars.category,
-        profile_picture_url = request.vars.profile_picture_url,
-    )
+    (plongitude, platitude) = geocode(request.vars.food_location + ', United States')
+    logger.info(platitude)
+    logger.info(plongitude)
+    # if user is logged in, insert their profile picture into the listing. Otherwise, don't
+    if auth.user is not None:
+        t_id = db.checklist.insert(
+            driver_name = request.vars.driver_name,
+            post = request.vars.post,
+            category = request.vars.category,
+            profile_picture_url = auth.user.profile_picture,
+            food_location=request.vars.food_location,
+            longitude = plongitude,
+            latitude = platitude,
+        )
+    else:
+        t_id = db.checklist.insert(
+            driver_name = request.vars.driver_name,
+            post = request.vars.post,
+            category = request.vars.category,
+        )
     t = db.checklist(t_id)
     return response.json(dict(title=t))
 
