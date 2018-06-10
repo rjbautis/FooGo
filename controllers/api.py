@@ -1,4 +1,7 @@
 # Here go your api methods.
+import json
+from gluon.tools import geocode
+
 
 def get_listings():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
@@ -30,6 +33,9 @@ def get_listings():
                 created_on=r.created_on,
                 driver_name = r.driver_name,
                 post = r.post,
+                food_location=r.food_location,
+                longitude=r.longitude,
+                latitude=r.latitude,
                 profile_picture_url = r.profile_picture_url,
             )
             listings.append(t)
@@ -63,7 +69,9 @@ def toggle_public():
 # Add new listings to the checklist
 @auth.requires_signature()
 def add_listing():
-
+    (plongitude, platitude) = geocode(request.vars.food_location + ', United States')
+    logger.info(platitude)
+    logger.info(plongitude)
     # if user is logged in, insert their profile picture into the listing. Otherwise, don't
     if auth.user is not None:
         t_id = db.checklist.insert(
@@ -71,6 +79,9 @@ def add_listing():
             post = request.vars.post,
             category = request.vars.category,
             profile_picture_url = auth.user.profile_picture,
+            food_location=request.vars.food_location,
+            longitude = plongitude,
+            latitude = platitude,
         )
     else:
         t_id = db.checklist.insert(

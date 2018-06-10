@@ -64,6 +64,7 @@ var app = function() {
                 driver_name: self.vue.form_driver_name,
                 post: self.vue.form_post,
                 category: this_category,
+                food_location: self.vue.form_food_location,
                 // profile_picture_url: curr_user_profile,
             },
             function (data) {
@@ -208,6 +209,7 @@ var app = function() {
             listings: [],
             logged_in: false,
             form_driver_name: null,
+            form_food_location: null,
             form_post: null,
             is_adding_listing: false,
             is_editing_listing: false,
