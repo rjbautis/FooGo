@@ -50,8 +50,7 @@ var app = function() {
             $.post(add_profile_picture_url,
                 {
                     profile_picture_url: get_url,
-                },
-                function (data) {})
+                })
         };
         setTimeout(add, 1000);
 

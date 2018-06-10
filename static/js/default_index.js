@@ -80,8 +80,8 @@ var app = function() {
             {
                 driver_name: self.vue.form_driver_name,
                 post: self.vue.form_post,
-                category: this_category
-                //profile_picture_url: add_profile_picture_url,
+                category: this_category,
+                profile_picture_url: self.vue.image_url,
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -166,7 +166,7 @@ var app = function() {
                 // Call enumerate function such that the array of listings is reordered by idx
                 enumerate(self.vue.comments);
         });
-    }
+    };
 
         // Toggles add button
     self.add_comment_button = function () {
@@ -178,7 +178,7 @@ var app = function() {
         self.vue.add_comment_id = self.vue.listings[listing_idx].id;
 
         self.get_listing_comments(listing_idx);
-    }
+    };
 
 
     self.add_comment_submit = function(listing_idx) {
@@ -200,7 +200,7 @@ var app = function() {
                 self.vue.form_comment = null;
                 self.vue.form_commenter_name = null;
             });
-    }
+    };
 
         // Deletes listing from the webpage (and the database using del_memo_url)
     // Uses listing_idx (instantiated by emuerate() function for all listings displayed) instead of memo.id (from database)
@@ -216,6 +216,58 @@ var app = function() {
                 enumerate(self.vue.comments);
             }
         );
+    };
+
+    /**************************************** Profile Picture ********************************************/
+
+    self.open_uploader = function () {
+        $("div#uploader_div").show();
+        self.vue.is_uploading = true;
+    };
+
+    self.close_uploader = function () {
+        $("div#uploader_div").hide();
+        self.vue.is_uploading = false;
+        $("input#file_input").val("");
+    };
+
+    self.upload_picture = function (event) {
+        // Reads the file.
+        var file = document.getElementById('file_input').files[0];
+        if (file) {
+            // Gets an upload URL.
+            console.log("Trying to get the upload url");
+            $.getJSON('https://upload-dot-luca-teaching.appspot.com/start/uploader/get_upload_url',
+                function (data) {
+                    // We now have upload (and download) URLs.
+                    var put_url = data['signed_url'];
+                    var get_url = data['access_url'];
+                    console.log("Received upload url: " + put_url);
+                    // Uploads the file, using the low-level interface.
+                    var req = new XMLHttpRequest();
+                    req.addEventListener("load", self.upload_complete(get_url));
+
+                    req.open("PUT", put_url, true);
+                    req.send(file);
+                });
+        }
+    };
+
+    self.upload_complete = function(get_url) {
+        // Hides the uploader div.
+        self.vue.show_pic = true;
+        self.close_uploader();
+        console.log('The file was uploaded; it is now available at ' + get_url);
+        self.vue.image_url = get_url;
+        var add = function () {
+            $.post(add_profile_picture_url,
+                {
+                    profile_picture_url: get_url,
+                })
+        };
+        setTimeout(add, 1000);
+
+        // TODO: recursive method to wait for ajax status of get_url, instead of timeout
     };
 
     // Complete as needed.
@@ -242,6 +294,11 @@ var app = function() {
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
+
+            is_uploading: false,
+            pic_url: null,
+            show_pic: false,
+            image_url: null,
         },
         methods: {
             add_listing_button: self.add_listing_button,
@@ -257,6 +314,10 @@ var app = function() {
             add_comment: self.add_comment,
             add_comment_button: self.add_comment_button,
             delete_comment: self.delete_comment,
+
+            open_uploader: self.open_uploader,
+            close_uploader: self.close_uploader,
+            upload_picture: self.upload_picture,
         }
 
     });

@@ -15,6 +15,7 @@
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
   var add_profile_picture_url = "{{=URL('api', 'add_profile_picture_url', user_signature=True)}}";
+  var add_listing_url = "{{=URL('api', 'add_listing', user_signature=True)}}";
 </script>
 
 {{if auth.user_id:}}
