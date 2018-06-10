@@ -88,6 +88,7 @@ def add_listing():
             driver_name = request.vars.driver_name,
             post = request.vars.post,
             category = request.vars.category,
+            food_location=request.vars.food_location,
         )
     t = db.checklist(t_id)
     return response.json(dict(title=t))

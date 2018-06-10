@@ -75,8 +75,9 @@
             <div v-for="listing in listings" class="card lifted" >
 
                 <div class="text-left listing-content">
-
-                    <img class="card-img-top" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                    <div class="listing_profile_picture">
+                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                    </div>
                     <!-- If we are editing the listing (i.e. the edit button was pressed) and the edit_id == the listing.id in the database, then display the textarea form for editting-->
                     <div v-if="is_editing_listing && edit_id==listing.id">
 
@@ -210,8 +211,14 @@
                         <div class="container padded">
                             <div v-for="comment in comments">
                                 <div class="memo">
-                                    <div>${comment.commenter_name}</div>
-                                    <div>${comment.written_comment}</div>
+                                    <div class="comment_image">
+                                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                    </div>
+                                    <div class="comment_content">
+                                        <div>${comment.commenter_name}</div>
+                                        <div>${comment.written_comment}</div>
+                                    </div>
+
                                     <div class="button_list">
                                         <div class="buttons">
                                         {{if auth.user:}}

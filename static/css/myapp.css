@@ -98,3 +98,22 @@ button:disabled:hover {
   text-transform: uppercase;
 }
 
+.comment_image{
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: right;
+}
+
+.listing_profile_picture {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.img-circle {
+    width: 100%;
+    height: auto;
+}
