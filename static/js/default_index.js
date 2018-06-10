@@ -81,7 +81,7 @@ var app = function() {
                 driver_name: self.vue.form_driver_name,
                 post: self.vue.form_post,
                 category: this_category,
-                profile_picture_url: self.vue.image_url,
+                profile_picture_url: curr_user_profile,
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -238,6 +238,7 @@ var app = function() {
             edit_post_content: null,
             original_driver_name: null,
             original_post: null,
+            image_url: null,
 
             comments: [],
             is_adding_comment: false,

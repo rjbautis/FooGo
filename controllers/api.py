@@ -18,6 +18,8 @@ def get_listings():
     else:
         rows = db(db.checklist.category == request.vars.category).select(db.checklist.ALL, orderby=~db.checklist.created_on, limitby=(start_idx, end_idx + 1))
 
+    logger.info(rows)
+
     # Append only the first ten listings to the list
     for i, r in enumerate(rows):
         if i < end_idx - start_idx:

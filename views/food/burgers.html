@@ -8,6 +8,8 @@
     var del_listing_url = "{{=URL('api', 'del_listing', user_signature=True)}}"
     var edit_listing_url = "{{=URL('api', 'edit_listing', user_signature=True)}}"
     var this_category = "burgers"
+    var curr_user_profile = "{{=auth.user.profile_picture}}"
+
 
     var get_listing_comments_url = "{{=URL('api', 'get_listing_comments')}}"
     var add_comment_url = "{{=URL('api', 'add_comment')}}"
@@ -64,7 +66,7 @@
         {{if auth.user:}}
         <div class="container card-columns" id="container">
             <!-- Listings for database -->
-            <div v-for="listing in listings" class="card lifted padded quarter">
+            <div v-for="listing in listings" class="card lifted">
 
                 <div class="text-left listing-content">
 
@@ -112,12 +114,12 @@
                         </div>
                     </div>
 
+                    <img class="card-img-top" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+
                     <!-- If we are not editing a listing, or if we are but the edit_id is not equal to current listing's id, then display the title and listing only -->
                     <div class="card-body" v-if="!is_editing_listing || (is_editing_listing && edit_id != listing.id)">
                         <div class="listing_title">${listing.driver_name}</div>
                         <div class="listing_content">${listing.post}</div>
-                        <div class="listing_profile_picture">
-                        </div>
                     </div>
                 </div>
 
