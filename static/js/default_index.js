@@ -88,6 +88,7 @@ var app = function() {
 
                 self.vue.listings.unshift(data.title);
                 enumerate(self.vue.listings);
+                self.vue.is_adding_listing = false;
             });
     };
 
@@ -215,8 +216,6 @@ var app = function() {
         );
     };
 
-
-
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -261,6 +260,7 @@ var app = function() {
     });
 
     self.get_listings();
+    //self.get_listing_comments();
     $("#vue-div").show();
 
     return self;
@@ -271,3 +271,5 @@ var APP = null;
 // This will make everything accessible from the js console;
 // for instance, self.x above would be accessible as APP.x
 jQuery(function(){APP = app();});
+
+
