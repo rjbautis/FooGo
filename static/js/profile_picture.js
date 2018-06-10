@@ -58,6 +58,7 @@ var app = function() {
         // TODO: recursive method to wait for ajax status of get_url, instead of timeout
     };
 
+    /*
     function get_profile_picture_url(start_idx, end_idx) {
         var pp = {
             start_idx: start_idx,
@@ -75,7 +76,7 @@ var app = function() {
                 self.vue.profile_picture = data.profile_picture;
         })
     };
-
+    */
 
 
     // Complete as needed.
@@ -84,7 +85,6 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            profile_picture: [],
             is_uploading: false,
             pic_url: null,
             show_pic: false,
@@ -97,7 +97,7 @@ var app = function() {
 
     });
 
-    self.get_profile_picture();
+    //self.get_profile_picture();
     $("#vue-div").show();
 
     return self;

@@ -80,7 +80,8 @@ var app = function() {
             {
                 driver_name: self.vue.form_driver_name,
                 post: self.vue.form_post,
-                category: this_category,
+                category: this_category
+                //profile_picture_url: add_profile_picture_url,
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -90,6 +91,7 @@ var app = function() {
                 enumerate(self.vue.listings);
                 self.vue.is_adding_listing = false;
             });
+        //console.log(add_profile_picture_url);
     };
 
     // Makes jquery api call to edit_listing_url with the updated/edited driver_name and post content

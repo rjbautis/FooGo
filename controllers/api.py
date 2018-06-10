@@ -28,7 +28,7 @@ def get_listings():
                 created_on=r.created_on,
                 driver_name = r.driver_name,
                 post = r.post,
-                profile_picture_url=r.profile_picture_url,
+                profile_picture_url = r.profile_picture_url,
             )
             listings.append(t)
         else:
@@ -68,6 +68,7 @@ def add_listing():
         driver_name = request.vars.driver_name,
         post = request.vars.post,
         category = request.vars.category,
+        profile_picture_url = request.vars.profile_picture_url,
     )
     t = db.checklist(t_id)
     return response.json(dict(title=t))
@@ -144,13 +145,13 @@ def del_comment():
 @auth.requires_signature()
 def add_profile_picture_url():
     profile_picture_id = db.checklist.insert(
-        profile_picture_url=request.vars.profile_picture_url,
-        #user_id=request.vars.user_id
+        profile_picture_url=request.vars.profile_picture_url
     )
+    logger.info(db().select(db.checklist.ALL))
     return response.json(dict(checklist=dict(
         #id=profile_picture_id,
-        profile_picture_url=request.vars.profile_picture_url,
-        #user_id=request.vars.user_id
+        profile_picture_url=request.vars.profile_picture_url
+
     )))
 
 

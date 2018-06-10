@@ -107,6 +107,10 @@
             <div class="card-body" v-if="!is_editing_listing || (is_editing_listing && edit_id != listing.id)">
                 <div class="listing_title">${listing.driver_name}</div>
                 <div class="listing_content">${listing.post}</div>
+                <div class="listing_profile_picture">
+                    <p>${listing.food_location}</p>
+                    <img v-bind:src="listing.profile_picture_url" height="200px" width="200px" class="padded">
+                </div>
             </div>
         </div>
 
