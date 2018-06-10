@@ -219,7 +219,7 @@ var app = function() {
     };
 
     /**************************************** Profile Picture ********************************************/
-
+    /*
     self.open_uploader = function () {
         $("div#uploader_div").show();
         self.vue.is_uploading = true;
@@ -269,7 +269,7 @@ var app = function() {
 
         // TODO: recursive method to wait for ajax status of get_url, instead of timeout
     };
-
+    */
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -294,11 +294,12 @@ var app = function() {
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
-
+            /*
             is_uploading: false,
             pic_url: null,
             show_pic: false,
             image_url: null,
+            */
         },
         methods: {
             add_listing_button: self.add_listing_button,
@@ -314,10 +315,11 @@ var app = function() {
             add_comment: self.add_comment,
             add_comment_button: self.add_comment_button,
             delete_comment: self.delete_comment,
-
+            /*
             open_uploader: self.open_uploader,
             close_uploader: self.close_uploader,
             upload_picture: self.upload_picture,
+            */
         }
 
     });

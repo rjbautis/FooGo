@@ -34,17 +34,6 @@
             </button>
         </div>
 
-        <div>
-            <!-- Code to upload files, with control buttons -->
-            <div id="uploader_div" style="display:none">
-                Upload a Profile Picture: <input id="file_input" type="file" accept="image/jpeg">
-            </div>
-            <button v-if="is_uploading" v-on:click="upload_picture">Submit</button>
-            <button v-if="!is_uploading" v-on:click="open_uploader"><i class="fa fa-plus"></i></button>
-            <button v-if="is_uploading" v-on:click="close_uploader">Cancel</button>
-        </div>
-
-
         <!-- Form to add listings -->
         <div v-if="is_adding_listing" id="add_listing_div">
             <br>
@@ -72,7 +61,7 @@
         </div>
 
         <br>
-
+        {{if auth.user:}}
         <div class="container card-columns" id="container">
             <!-- Listings for database -->
             <div v-for="listing in listings" class="card lifted padded quarter">
@@ -128,8 +117,7 @@
                         <div class="listing_title">${listing.driver_name}</div>
                         <div class="listing_content">${listing.post}</div>
                         <div class="listing_profile_picture">
-                            <p>${listing.food_location}</p>
-                            <img v-bind:src="listing.profile_picture_url" height="200px" width="200px" class="padded">
+                            {{form.vars.image}}
                         </div>
                     </div>
                 </div>
@@ -249,7 +237,7 @@
 
 
         </div>
-
+        {{pass}}
     </div>
 
 </div>

@@ -35,20 +35,21 @@
             <li class="nav-item active">
                 <a data-toggle="tab" href="#main">Profile Info</a>
             </li>
+            <!--
             <li class="nav-item">
                 <a data-toggle="tab" href="#profile_picture">Picture</a>
             </li>
+            -->
         </ul>
 
         <div class="tab-content">
             <div class="tab-pane fade in active" id="main">
                 <p>{{=crud.read(db.auth_user,user)}}</p>
             </div>
-
+            <!--
             <div class="tab-pane fade in" id="profile_picture">
                 <div id="vue-div" class="display:none">
                     <div>
-                        <!-- Code to upload files, with control buttons -->
                         <div id="uploader_div" style="display:none">
                             Upload a Profile Picture: <input id="file_input" type="file" accept="image/jpeg">
                         </div>
@@ -58,6 +59,7 @@
                     </div>
                 </div>
             </div>
+            -->
 
         </div>
     </div>
@@ -72,5 +74,4 @@
 </body>
 </html>
 
-<script src="{{=URL('static', 'js/profile_picture.js')}}"></script>
  
