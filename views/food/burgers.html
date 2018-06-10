@@ -1,6 +1,17 @@
 {{extend 'layout.html'}}
 
 {{block head}}
+
+<style>
+
+.searchbar {
+  background-color: #8BCAC7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>
+
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
   var listings_url = "{{=URL('api', 'get_listings')}}"
@@ -14,9 +25,16 @@
   var del_comment_url = "{{=URL('api', 'del_comment')}}"
 </script>
 {{end}}
-
 <div class="main_content">
-
+  <!--
+  <div class="searchbar">
+    <h1>BURGERS</h1>
+    <span v-if="page=='prod'">
+      <input class="search_input" v-model="post_search"/>
+        <button class="btn" v-on:click="do_search"><i class="fa fa-search fa-lg"></i></button>
+    </span>
+  </div>
+  -->
   <div id="vue-div" class="display:none">
       <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
 

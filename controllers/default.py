@@ -19,7 +19,18 @@ def index():
     """
     # response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
+def user_look_up():
+    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))
+    if form.accepts(request):
+        tokens = form.vars.name.split()
+        query = reduce(lambda a,b:a&b,
+                       [db.auth_user.first_name.contains(k)|db.auth_user.last_name.contains(k) \
+                            for k in tokens])
+        people = db(query).select()
+    else:
+        people = []
 
+    return locals()
 def profile():
 
     user = User(me)

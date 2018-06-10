@@ -1,0 +1,48 @@
+{{extend 'layout.html'}}
+
+<style>
+.tool {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tool .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: 60px;
+    margin-bottom: -30px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+
+.tool:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+</style>
+
+
+<h2>Search for a user to see their information</h2>
+<br>
+{{=form}}
+{{if people:}}
+<h3>Results</h3>
+
+{{for user in people:}}
+<div class="tool">{{=user.first_name}} {{=user.last_name}}
+    <span class="tooltiptext">{{=user.first_name}} {{=user.last_name}}: Venmo: {{=user.CruzID}} PayPal:{{=user.VenmoID}}</span>
+</div>
+<br>
+{{pass}}
+{{pass}}
