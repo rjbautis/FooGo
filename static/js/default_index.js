@@ -174,6 +174,7 @@ var app = function() {
                 commenter_name: self.vue.form_commenter_name,
                 written_comment: self.vue.form_comment,
                 comment_location: self.vue.form_comment_location,
+                comment_phone: self.vue.form_comment_phone,
             },
             function (data) {
                 $.web2py.enableElement($("#add_comment_submit"));
@@ -184,6 +185,7 @@ var app = function() {
                 self.vue.form_comment = null;
                 self.vue.form_commenter_name = null;
                 self.vue.form_comment_location = null;
+                self.vue.form_comment_phone = null;
             });
     };
 
@@ -256,6 +258,7 @@ var app = function() {
             form_commenter_name: null,
             form_comment: null,
             form_comment_location: null,
+            form_comment_phone: null,
 
         },
         methods: {

@@ -243,6 +243,13 @@ function load(mapNum) {
                                     <span class="help-block"></span>
                                 </div>
                             </div>
+                            <div class="form-group" id="no_table_content__row">
+                                <div>
+                                    <textarea class="form-control string" v-model="form_comment_phone" placeholder="Phone 1(xxx)-xxx-xxxx"
+                                              type="text"></textarea>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
                             <!-- The cancel and submit buttons for editing a listing -->
                             <div class="form-group row edit-buttons" id="submit_record__row">
                                 <div class="col-md-6">
@@ -276,6 +283,7 @@ function load(mapNum) {
                                         <div class="comment_name"><b>Name: ${comment.commenter_name}</b></div>
                                         <div class="comment_text">Post: ${comment.written_comment}</div>
                                         <div class="comment_text">Deliver To: ${comment.comment_location}</div>
+                                        <div class="comment_text">Deliver To: ${comment.comment_phone}</div>
                                     </div>
 
                                     <div class="button_list">

@@ -39,9 +39,10 @@ db.checklist.is_public.readable = db.checklist.is_public.writable = False
 
 db.define_table('comments',
                 Field('parent_listing_id'),
-                Field('commenter_name', 'text'),
-                Field('written_comment', 'text'),
-                Field('comment_location', 'text'),
+                Field('commenter_name'),
+                Field('written_comment'),
+                Field('comment_location'),
+                Field('comment_phone'),
                 Field('user_email', default=get_user_email()),
                 Field('profile_picture_url'),
                 Field('created_on', 'datetime', default=request.now),
