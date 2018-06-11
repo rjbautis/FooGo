@@ -109,7 +109,7 @@ function load(mapNum) {
         <br>
         <div class="container card-columns" id="container">
             <!-- Listings for database -->
-            <div v-for="listing in listings" class="card" >
+            <div v-for="listing in listings" class="card lifted" >
 
                 <div class="text-left listing-content">
                     <div class="listing_profile_picture">
@@ -226,7 +226,7 @@ function load(mapNum) {
                             <div class="form-group row edit-buttons" id="submit_record__row">
                                 <div class="col-md-6">
                                     <button v-if="is_adding_comment" class="btn btn-warning btn-sm cancel-button"
-                                            v-on:click="add_comment_button(listing_idx)" type="button">
+                                            v-on:click="add_comment_button()" type="button">
                                         Cancel
                                     </button>
                                 </div>
