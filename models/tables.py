@@ -45,9 +45,7 @@ db.define_table('comments',
                 Field('profile_picture_url'),
                 Field('created_on', 'datetime', default=request.now),
                 Field('showQR', 'boolean', default=False),
-                Field('venmo_QR_url')),
-                Field('location'),
-                Field('phone')
+                Field('venmo_QR_url'))
 
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
