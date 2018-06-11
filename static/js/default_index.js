@@ -65,6 +65,7 @@ var app = function() {
                 post: self.vue.form_post,
                 category: this_category,
                 food_location: self.vue.form_food_location,
+                fee: self.vue.form_fee
             },
             function (data) {
                 $.web2py.enableElement($("#add_listing_submit"));
@@ -82,6 +83,7 @@ var app = function() {
             {
                 driver_name_content: self.vue.edit_driver_name_content,
                 post_content: self.vue.edit_post_content,
+                fee_content: self.vue.edit_fee_content,
                 id: self.vue.edit_id
             },
             function (data) {
@@ -95,6 +97,7 @@ var app = function() {
         // Remember the original listing (in case the user decides to cancel the edit)
         self.vue.original_driver_name = self.vue.listings[listing_idx].driver_name;
         self.vue.original_post = self.vue.listings[listing_idx].post;
+        self.vue.original_fee = self.vue.listings[listing_idx].fee;
 
         self.vue.is_editing_listing = !self.vue.is_editing_listing;
         self.vue.edit_id = self.vue.listings[listing_idx].id;
@@ -104,6 +107,7 @@ var app = function() {
         // if user canceled the edit, let the current listing being edited be returned to original state
         self.vue.listings[listing_idx].driver_name = self.vue.original_driver_name;
         self.vue.listings[listing_idx].post = self.vue.original_post;
+        self.vue.listings[listing_idx].fee = self.vue.original_fee;
 
         self.vue.is_editing_listing = !self.vue.is_editing_listing;
         self.vue.edit_id = 0;
@@ -230,13 +234,17 @@ var app = function() {
             form_driver_name: null,
             form_food_location: null,
             form_post: null,
+            form_fee: null,
             is_adding_listing: false,
             is_editing_listing: false,
             edit_id: 0,
+
             edit_driver_name_content: null,
             edit_post_content: null,
+            edit_fee_content: null,
             original_driver_name: null,
             original_post: null,
+            original_fee: null,
             image_url: null,
 
 

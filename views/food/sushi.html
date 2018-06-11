@@ -92,7 +92,13 @@ function load(mapNum) {
                 </div>
                 <div class="form-group" id="no_table_listing__row">
                     <div><input class="form-control string" id="no_table_listing" name="content" type="text"
-                                v-model="form_food_location" placeholder="Address of the Business"/>
+                                v-model="form_food_location" placeholder="Address of the Business(Full Address)"/>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_listing__row">
+                    <div><input class="form-control string" id="no_table_listing" name="fee" type="text"
+                                v-model="form_fee" placeholder="Enter the Deliver Fee You will charge"/>
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -140,6 +146,14 @@ function load(mapNum) {
                                 </div>
                             </div>
 
+                            <div class="form-group" id="no_table_content__row">
+                                <div>
+                                    <textarea class="form-control string" v-model="edit_fee_content = listing.fee"
+                                              placeholder="Delivery Fee" type="text"></textarea>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
                             <!-- The cancel and submit buttons for editing a listing -->
                             <div class="form-group row edit-buttons" id="submit_record__row">
                                 <div class="col-md-6">
@@ -160,9 +174,10 @@ function load(mapNum) {
                     </div>
                     <!-- If we are not editing a listing, or if we are but the edit_id is not equal to current listing's id, then display the title and listing only -->
                     <div class="card-body" v-if="!is_editing_listing || (is_editing_listing && edit_id != listing.id)">
-                        <div class="listing_title">${listing.driver_name}</div>
-                        <div class="listing_content">${listing.post}</div>
-                        <div class="listing_content">${listing.food_location}</div>
+                      <div class="listing_title">Driver: <b>${listing.driver_name}</b></div>
+                        <div class="listing_content">Place: ${listing.post}</div>
+                        <div class="listing_content">Location: ${listing.food_location}</div>
+                        <div class="listing_content">Deliver Fee: $${listing.fee}</div>
                     </div>
                 </div>
 
@@ -247,9 +262,9 @@ function load(mapNum) {
 
                         <div class="container padded">
                             <div v-for="comment in comments">
-                                <div class="memo">
+                                <div class="memo" style="min-height: 100px;">
                                     <div class="comment_image">
-                                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                        <img class="img-circle" v-bind:src="'/final/default/download/' + comment.profile_picture_url"/>
                                     </div>
                                     <div class="comment_content">
                                         <div class="comment_name"><b>${comment.commenter_name}</b></div>
