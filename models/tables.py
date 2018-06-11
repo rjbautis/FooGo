@@ -18,7 +18,7 @@ db.define_table('checklist',
                 Field('food_location', default="Santa Cruz, CA"),
                 Field('driver_name', 'text'),
                 Field('latitude', 'double', readable=False),
-                Field('longitude', 'double', reable=False),
+                Field('longitude', 'double', readable=False),
                 Field('post'),
                 Field('fee', 'double', label="delivery fee"),
                 Field('profile_picture_url'),
@@ -45,7 +45,9 @@ db.define_table('comments',
                 Field('profile_picture_url'),
                 Field('created_on', 'datetime', default=request.now),
                 Field('showQR', 'boolean', default=False),
-                Field('venmo_QR_url'))
+                Field('venmo_QR_url')),
+                Field('location'),
+                Field('phone')
 
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
