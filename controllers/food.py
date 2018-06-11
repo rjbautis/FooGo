@@ -21,33 +21,73 @@ def burgers():
 
 
 def desserts():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def healthy():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def korean():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def pasta():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def pizza():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def sandwiches():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def sushi():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
 
 def burger():
-    return dict(message=T('Welcome to web2py!'))
+    posts = db().select(
+        orderby=~db.checklist.updated_on,
+        limitby=(0, 5)
+    )
+
+    return locals()
 
