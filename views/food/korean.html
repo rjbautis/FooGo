@@ -282,7 +282,7 @@ function load(mapNum) {
                                         <div class="buttons">
                                         {{if auth.user:}}
                                             <!-- if the listing belongs to the logged-in user, show all button options -->
-                                            <div v-if="comment.user_email == '{{=auth.user.email}}'">
+                                            <div v-if="comment.parent_listing_id == listing.id || comment.user_email == '{{auth.user.email}}'">
                                                 <!-- Edit listing -->
                                                 <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i
                                                         class="fa fa-trash fa-lg"></i></a>
