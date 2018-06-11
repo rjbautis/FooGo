@@ -78,8 +78,13 @@ h2 {
             <h3>Results</h3>
 
             {{for user in people:}}
-            <div class="tool">{{=user.first_name}} {{=user.last_name}}
-                <span class="tooltiptext">{{=user.first_name}} {{=user.last_name}}: Venmo: {{=user.VenmoID}} PayPal:{{=user.CruzID}}</span>
+            <div class="tool">
+                {{=user.first_name}} {{=user.last_name}}
+                <span class="tooltiptext">
+                  Venmo: {{=user.VenmoID}}
+                  <br>
+                  PayPal: {{=user.CruzID}}
+                </span>
             </div>
 
             <br>

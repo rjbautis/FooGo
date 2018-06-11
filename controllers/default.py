@@ -70,7 +70,7 @@ def user():
     return dict(form=auth())
 
 def user_look_up():
-    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))
+    form = SQLFORM.factory(Field('name', label="", requires=IS_NOT_EMPTY()))
     if form.accepts(request):
         tokens = form.vars.name.split()
         query = reduce(lambda a,b:a&b,
