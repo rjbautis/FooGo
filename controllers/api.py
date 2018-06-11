@@ -37,6 +37,7 @@ def get_listings():
                 longitude=r.longitude,
                 latitude=r.latitude,
                 profile_picture_url = r.profile_picture_url,
+                venmo_QR_url = r.venmo_QR_url,
             )
             listings.append(t)
 

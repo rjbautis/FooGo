@@ -2,6 +2,8 @@
 
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{=GOOGLEMAP_KEY}}" type="text/javascript"></script>
+
 <script>
     var listings_url = "{{=URL('api', 'get_listings')}}"
     var add_listing_url = "{{=URL('api', 'add_listing', user_signature=True)}}"
@@ -12,12 +14,47 @@
     var get_listing_comments_url = "{{=URL('api', 'get_listing_comments')}}"
     var add_comment_url = "{{=URL('api', 'add_comment')}}"
     var del_comment_url = "{{=URL('api', 'del_comment')}}"
+    var toggleQR_url = "{{=URL('api', 'toggle_QR', user_signature=True)}}"
 
     var add_profile_picture_url = "{{=URL('api', 'add_profile_picture_url', user_signature=True)}}";
 </script>
 {{end}}
-
+<script type="text/javascript">
+function load(mapNum) {
+    if (GBrowserIsCompatible()) {
+    var map = new GMap2(document.getElementById("map" + mapNum));
+    map.addControl(new GSmallMapControl());
+    map.addControl(new GMapTypeControl());
+    //center Santa Cruz
+    map.setCenter(new GLatLng (36.9741171, -122.03079630000002), 12);
+    var blueIcon = new GIcon();
+    blueIcon.image = "http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png";
+    blueIcon.iconAnchor = new GPoint(9, 34);
+    blueIcon.infoWindowAnchor = new GPoint(9, 2);
+    blueIcon.infoShadowAnchor = new GPoint(18, 14);
+    function createMarker(point, message) {
+        // set up marker option and message
+        markerOptions = { icon:blueIcon };
+        var marker = new GMarker(point, markerOptions);
+        GEvent.addListener(marker, "click", function() {
+            marker.openInfoWindowHtml(message);
+        });
+        return marker;
+    }
+    {{for row in posts:}}{{if row.latitude and row.longitude:}}
+        var point = new GLatLng({{=row.longitude}},{{=row.latitude}});
+        map.addOverlay(createMarker(point, "Location: {{=row.food_location}}, Email:"));
+    {{pass}}{{pass}}
+  }
+}
+</script>
 <div class="main_content">
+
+    <div class="jumbotron" id="map1" style="width:100%;height:400px;">
+    </div>
+    <script>load(1);</script>
+
+    <br>
 
     <div id="vue-div" class="display:none">
         <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
@@ -72,15 +109,16 @@
         <br>
         <div class="container card-columns" id="container">
             <!-- Listings for database -->
-            <div v-for="listing in listings" class="card lifted" >
+            <div v-for="listing in listings" class="card" >
 
                 <div class="text-left listing-content">
-
-                    <img class="card-img-top" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                    <div class="listing_profile_picture">
+                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                    </div>
                     <!-- If we are editing the listing (i.e. the edit button was pressed) and the edit_id == the listing.id in the database, then display the textarea form for editting-->
                     <div v-if="is_editing_listing && edit_id==listing.id">
 
-                        <div class="container">
+                        <div class="container">`
                             <br>
 
                             <!-- Display listing title from the database that will be editted -->
@@ -210,8 +248,14 @@
                         <div class="container padded">
                             <div v-for="comment in comments">
                                 <div class="memo">
-                                    <div>${comment.commenter_name}</div>
-                                    <div>${comment.written_comment}</div>
+                                    <div class="comment_image">
+                                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                    </div>
+                                    <div class="comment_content">
+                                        <div class="comment_name"><b>${comment.commenter_name}</b></div>
+                                        <div class="comment_text">${comment.written_comment}</div>
+                                    </div>
+
                                     <div class="button_list">
                                         <div class="buttons">
                                         {{if auth.user:}}
@@ -220,6 +264,12 @@
                                                 <!-- Edit listing -->
                                                 <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i
                                                         class="fa fa-trash fa-lg"></i></a>
+                                                <a v-if="!comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
+                                                        class="fa fa-qrcode"></i></a>
+                                                <a v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
+                                                        class="fa fa-qrcode"></i></a>
+                                                <img v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)"
+                                                     v-bind:src="'/final/default/download/' + listing.venmo_QR_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}
