@@ -83,6 +83,7 @@ var app = function() {
             {
                 driver_name_content: self.vue.edit_driver_name_content,
                 post_content: self.vue.edit_post_content,
+                fee_content: self.vue.edit_fee_content,
                 id: self.vue.edit_id
             },
             function (data) {
@@ -237,8 +238,10 @@ var app = function() {
             is_adding_listing: false,
             is_editing_listing: false,
             edit_id: 0,
+
             edit_driver_name_content: null,
             edit_post_content: null,
+            edit_fee_content: null,
             original_driver_name: null,
             original_post: null,
             original_fee: null,

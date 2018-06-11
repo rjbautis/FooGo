@@ -121,7 +121,7 @@ def edit_listing():
         row.update_record(
             driver_name = request.vars.driver_name_content,
             post = request.vars.post_content,
-            fee = request.vars.fee,
+            fee = request.vars.fee_content,
         )
     return dict()
 

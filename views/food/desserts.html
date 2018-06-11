@@ -148,7 +148,7 @@ function load(mapNum) {
 
                             <div class="form-group" id="no_table_content__row">
                                 <div>
-                                    <textarea class="form-control string" v-model="edit_post_content = listing.fee"
+                                    <textarea class="form-control string" v-model="edit_fee_content = listing.fee"
                                               placeholder="Delivery Fee" type="text"></textarea>
                                     <span class="help-block"></span>
                                 </div>
@@ -174,8 +174,8 @@ function load(mapNum) {
                     </div>
                     <!-- If we are not editing a listing, or if we are but the edit_id is not equal to current listing's id, then display the title and listing only -->
                     <div class="card-body" v-if="!is_editing_listing || (is_editing_listing && edit_id != listing.id)">
-                        <div class="listing_title">Driver: ${listing.driver_name}</div>
-                        <div class="listing_content">Post: ${listing.post}</div>
+                      <div class="listing_title">Driver: <b>${listing.driver_name}</b></div>
+                        <div class="listing_content">Place: ${listing.post}</div>
                         <div class="listing_content">Location: ${listing.food_location}</div>
                         <div class="listing_content">Deliver Fee: $${listing.fee}</div>
                     </div>
