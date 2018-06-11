@@ -9,7 +9,7 @@
     var add_listing_url = "{{=URL('api', 'add_listing', user_signature=True)}}"
     var del_listing_url = "{{=URL('api', 'del_listing', user_signature=True)}}"
     var edit_listing_url = "{{=URL('api', 'edit_listing', user_signature=True)}}"
-    var this_category = "healthy"
+    var this_category = "health"
 
     var get_listing_comments_url = "{{=URL('api', 'get_listing_comments')}}"
     var add_comment_url = "{{=URL('api', 'add_comment')}}"
@@ -92,7 +92,13 @@ function load(mapNum) {
                 </div>
                 <div class="form-group" id="no_table_listing__row">
                     <div><input class="form-control string" id="no_table_listing" name="content" type="text"
-                                v-model="form_food_location" placeholder="Address of the Business"/>
+                                v-model="form_food_location" placeholder="Address of the Business(Full Address)"/>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_listing__row">
+                    <div><input class="form-control string" id="no_table_listing" name="fee" type="text"
+                                v-model="form_fee" placeholder="Enter the Deliver Fee You will charge"/>
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -140,6 +146,14 @@ function load(mapNum) {
                                 </div>
                             </div>
 
+                            <div class="form-group" id="no_table_content__row">
+                                <div>
+                                    <textarea class="form-control string" v-model="edit_post_content = listing.fee"
+                                              placeholder="Delivery Fee" type="text"></textarea>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
                             <!-- The cancel and submit buttons for editing a listing -->
                             <div class="form-group row edit-buttons" id="submit_record__row">
                                 <div class="col-md-6">
@@ -160,9 +174,10 @@ function load(mapNum) {
                     </div>
                     <!-- If we are not editing a listing, or if we are but the edit_id is not equal to current listing's id, then display the title and listing only -->
                     <div class="card-body" v-if="!is_editing_listing || (is_editing_listing && edit_id != listing.id)">
-                        <div class="listing_title">${listing.driver_name}</div>
-                        <div class="listing_content">${listing.post}</div>
-                        <div class="listing_content">${listing.food_location}</div>
+                        <div class="listing_title">Driver: ${listing.driver_name}</div>
+                        <div class="listing_content">Post: ${listing.post}</div>
+                        <div class="listing_content">Location: ${listing.food_location}</div>
+                        <div class="listing_content">Deliver Fee: $${listing.fee}</div>
                     </div>
                 </div>
 

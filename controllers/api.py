@@ -36,6 +36,7 @@ def get_listings():
                 food_location=r.food_location,
                 longitude=r.longitude,
                 latitude=r.latitude,
+                fee=r.fee,
                 profile_picture_url = r.profile_picture_url,
                 venmo_QR_url = r.venmo_QR_url,
             )
@@ -82,6 +83,7 @@ def add_listing():
             profile_picture_url = auth.user.profile_picture,
             venmo_QR_url = auth.user.VenmoQR,
             food_location=request.vars.food_location,
+            fee=request.vars.fee,
             longitude = plongitude,
             latitude = platitude,
         )
@@ -119,6 +121,7 @@ def edit_listing():
         row.update_record(
             driver_name = request.vars.driver_name_content,
             post = request.vars.post_content,
+            fee = request.vars.fee,
         )
     return dict()
 
