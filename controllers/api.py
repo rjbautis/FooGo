@@ -138,6 +138,8 @@ def get_listing_comments():
             written_comment = r.written_comment,
             created_on = r.created_on,
             user_email = r.user_email,
+            venmo_QR_url= r.venmo_QR_url
+
         )
         comments.append(c)
 
@@ -151,8 +153,10 @@ def add_comment():
         parent_listing_id = request.vars.parent_listing_id,
         commenter_name = request.vars.commenter_name,
         written_comment = request.vars.written_comment,
+        venmo_QR_url=auth.user.VenmoQR
     )
     c = db.comments(c_id)
+    logger.info(c)
     return response.json(dict(comments=c))
 
 
@@ -164,12 +168,27 @@ def del_comment():
 
 @auth.requires_signature()
 def toggle_QR():
-    t = db.comments(request.vars.comment_id)
     logger.info(request.vars.comment_id)
-    t.update_record(showQR=not t.showQR)
-    logger.info(t)
-    return "ok"
+    if request.vars.comment_id is not None:
+        q = (db.comments.id == request.vars.comment_id)
+        row = db(q).select().first()
 
+        logger.info("row is ")
+        logger.info(row)
+
+        # If the query's is_public field is True, then toggle it to False
+        # Otherwise, toggle it to True
+        if row.showQR is True:
+            row.update_record(showQR='False')
+        else:
+            row.update_record(showQR='True')
+        logger.info(row)
+    return response.json(dict(row=row))
+
+    # q = db.comments(request.vars.comment_id)
+    # logger.info(request.vars.comment_id)
+    # t.update_record(showQR=not t.showQR)
+    # loggerx
 
 # Profile Picture
 
