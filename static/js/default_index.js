@@ -173,6 +173,7 @@ var app = function() {
                 parent_listing_id: self.vue.listings[listing_idx].id,
                 commenter_name: self.vue.form_commenter_name,
                 written_comment: self.vue.form_comment,
+                comment_location: self.vue.form_comment_location,
             },
             function (data) {
                 $.web2py.enableElement($("#add_comment_submit"));
@@ -182,6 +183,7 @@ var app = function() {
                 // Reset comment fields after submission
                 self.vue.form_comment = null;
                 self.vue.form_commenter_name = null;
+                self.vue.form_comment_location = null;
             });
     };
 
@@ -253,6 +255,7 @@ var app = function() {
             add_comment_id: 0,
             form_commenter_name: null,
             form_comment: null,
+            form_comment_location: null,
 
         },
         methods: {

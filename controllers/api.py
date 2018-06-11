@@ -142,6 +142,7 @@ def get_listing_comments():
             created_on = r.created_on,
             user_email = r.user_email,
             venmo_QR_url= r.venmo_QR_url,
+            comment_location = r.comment_location,
             profile_picture_url = r.profile_picture_url
 
         )
@@ -160,6 +161,7 @@ def add_comment():
         commenter_name = request.vars.commenter_name,
         written_comment = request.vars.written_comment,
         venmo_QR_url=auth.user.VenmoQR,
+        comment_location=request.vars.comment_location,
         profile_picture_url=auth.user.profile_picture
     )
     c = db.comments(c_id)
