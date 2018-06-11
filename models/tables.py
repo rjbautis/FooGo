@@ -42,6 +42,7 @@ db.define_table('comments',
                 Field('commenter_name', 'text'),
                 Field('written_comment', 'text'),
                 Field('user_email', default=get_user_email()),
+                Field('profile_picture_url'),
                 Field('created_on', 'datetime', default=request.now),
                 Field('showQR', 'boolean', default=False),
                 Field('venmo_QR_url'))

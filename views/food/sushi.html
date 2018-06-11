@@ -262,9 +262,9 @@ function load(mapNum) {
 
                         <div class="container padded">
                             <div v-for="comment in comments">
-                                <div class="memo">
+                                <div class="memo" style="min-height: 100px;">
                                     <div class="comment_image">
-                                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                                        <img class="img-circle" v-bind:src="'/final/default/download/' + comment.profile_picture_url"/>
                                     </div>
                                     <div class="comment_content">
                                         <div class="comment_name"><b>${comment.commenter_name}</b></div>
