@@ -25,8 +25,10 @@ div.add_btn a {
 /* line 16, ../sass/_main.scss */
 div.memo {
   margin: 5px;
-  border: 2px solid gray;
-  padding: 5px;
+  border: 1px solid gray;
+  padding: 20px;
+  border-radius: 10px;
+  background: WhiteSmoke;
 }
 /* line 21, ../sass/_main.scss */
 div.memo div.memo_title {
