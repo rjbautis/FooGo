@@ -24,9 +24,9 @@
            return marker;
         }
 
-        {{for row in posts:}}{{if row.latitude and row.longitude:}}
-          var point = new GLatLng({{=row.longitude}},{{=row.latitude}});
-          map.addOverlay(createMarker(point, "Location: {{=row.food_location}}, Email:"));
+        {{for post in posts:}}{{if post.latitude and post.longitude:}}
+          var point = new GLatLng({{=post.longitude}},{{=post.latitude}});
+          map.addOverlay(createMarker(point, "Name:{{=post.driver_name}} Post:{{=post.post}} Location:{{=post.food_location}} "));
         {{pass}}{{pass}}
 
      }
