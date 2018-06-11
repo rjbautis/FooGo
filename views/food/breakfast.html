@@ -109,7 +109,7 @@ function load(mapNum) {
         <br>
         <div class="container card-columns" id="container">
             <!-- Listings for database -->
-            <div v-for="listing in listings" class="card" >
+            <div v-for="listing in listings" class="card lifted" >
 
                 <div class="text-left listing-content">
                     <div class="listing_profile_picture">
@@ -264,12 +264,10 @@ function load(mapNum) {
                                                 <!-- Edit listing -->
                                                 <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i
                                                         class="fa fa-trash fa-lg"></i></a>
-                                                <a v-if="!comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
-                                                        class="fa fa-qrcode"></i></a>
-                                                <a v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
-                                                        class="fa fa-qrcode"></i></a>
-                                                <img v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)"
-                                                     v-bind:src="'/final/default/download/' + listing.venmo_QR_url"/>
+                                                <a v-on:click="toggle_QR(comment._idx)" class="btn rounded">
+                                                  <i v-bind:class="{'fa fa-qrcode': !comment.showQR, 'fa fa-close': comment.showQR}"></i>
+                                                </a>
+                                                <img v-if="comment.showQR" v-bind:src=" '/final/default/download/' + comment.venmo_QR_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}
