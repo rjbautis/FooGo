@@ -147,14 +147,15 @@ var app = function() {
     };
 
         // Toggles add button
-    self.add_comment_button = function () {
+    self.add_comment_button = function (listing_idx) {
         self.vue.is_adding_comment = !self.vue.is_adding_comment;
+        // self.get_listing_comments(listing_idx);
     };
 
     self.add_comment = function(listing_idx) {
         self.vue.is_adding_comment = !self.vue.is_adding_comment;
         self.vue.add_comment_id = self.vue.listings[listing_idx].id;
-
+        console.log("adding");
         self.get_listing_comments(listing_idx);
     };
 
@@ -199,10 +200,22 @@ var app = function() {
     self.toggle_QR = function(comment_idx) {
         var comment = self.vue.comments[comment_idx];
         comment.showQR = !comment.showQR;
+        console.log(comment.id);
+
+        console.log(comment);
+
         $.post(toggleQR_url,
-            {comment_id: comment.id},
-            function () {}
-            )
+            {comment_id: self.vue.comments[comment_idx].id},
+            function (data) {
+                enumerate(self.vue.listings);
+                enumerate(self.vue.comments);
+                console.log(data);
+
+            })
+        // console.log("comment is");
+        // console.log(comment.id);
+        // console.log(comment);
+
     };
 
 
