@@ -119,7 +119,7 @@ function load(mapNum) {
 
                 <div class="text-left listing-content">
                     <div class="listing_profile_picture">
-                        <img class="img-circle" v-bind:src="'/final/default/download/' + listing.profile_picture_url"/>
+                        <img class="img-circle" v-bind:src="'/init/default/download/' + listing.profile_picture_url"/>
                     </div>
                     <!-- If we are editing the listing (i.e. the edit button was pressed) and the edit_id == the listing.id in the database, then display the textarea form for editting-->
                     <div v-if="is_editing_listing && edit_id==listing.id">
@@ -270,7 +270,7 @@ function load(mapNum) {
                             <div v-for="comment in comments">
                                 <div class="memo" style="min-height: 100px;">
                                     <div class="comment_image">
-                                        <img class="img-circle" v-bind:src="'/final/default/download/' + comment.profile_picture_url"/>
+                                        <img class="img-circle" v-bind:src="'/init/default/download/' + comment.profile_picture_url"/>
                                     </div>
                                     <div class="comment_content">
                                         <div class="comment_name"><b>Name: ${comment.commenter_name}</b></div>
@@ -289,7 +289,7 @@ function load(mapNum) {
                                                 <a v-on:click="toggle_QR(comment._idx)" class="btn rounded">
                                                   <i v-bind:class="{'fa fa-qrcode': !comment.showQR, 'fa fa-close': comment.showQR}"></i>
                                                 </a>
-                                                <img v-if="comment.showQR" v-bind:src=" '/final/default/download/' + comment.venmo_QR_url"/>
+                                                <img v-if="comment.showQR" v-bind:src=" '/init/default/download/' + comment.venmo_QR_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}
