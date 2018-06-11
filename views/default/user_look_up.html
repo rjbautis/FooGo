@@ -1,6 +1,39 @@
 {{extend 'layout.html'}}
 
 <style>
+    header.masthead {
+  position: relative;
+  background-color: #343a40;
+  background: url("../static/images/UserBackdrop.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+header.masthead .overlay {
+  position: absolute;
+  background-color: #212529;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
+
+header.masthead h1 {
+  font-size: 2rem;
+}
+    
+.center-div
+{
+     margin: 0 auto;
+     width: 800px;
+     padding-left: 150px;
+}
+    
 .tool {
     position: relative;
     display: inline-block;
@@ -27,19 +60,33 @@
     visibility: visible;
     opacity: 1;
 }
+h2 {
+    color: ghostwhite;
+}
 </style>
+<body>
+    <header class="masthead text-white text-center">
+          <div class="overlay"></div>
+          <div class="container">
+            <h2>Search for a user to see their information</h2>
+            <div class="center-div">   
+            <br>
+            {{=form}}
+            </div>
 
+            {{if people:}}
+            <h3>Results</h3>
 
-<h2>Search for a user to see their information</h2>
-<br>
-{{=form}}
-{{if people:}}
-<h3>Results</h3>
+            {{for user in people:}}
+            <div class="tool">{{=user.first_name}} {{=user.last_name}}
+                <span class="tooltiptext">{{=user.first_name}} {{=user.last_name}}: Venmo: {{=user.VenmoID}} PayPal:{{=user.CruzID}}</span>
+            </div>
 
-{{for user in people:}}
-<div class="tool">{{=user.first_name}} {{=user.last_name}}
-    <span class="tooltiptext">{{=user.first_name}} {{=user.last_name}}: Venmo: {{=user.VenmoID}} PayPal:{{=user.CruzID}}</span>
-</div>
-<br>
-{{pass}}
-{{pass}}
+            <br>
+            {{pass}}
+            {{pass}}
+
+          </div>
+        </header>
+</body>
+
