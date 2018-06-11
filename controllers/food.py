@@ -4,7 +4,7 @@ import json
 
 
 def breakfast():
-    posts = db().select(
+    posts = db(db.checklist.category == "breakfast").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -12,7 +12,7 @@ def breakfast():
     return locals()
 
 def burgers():
-    posts = db().select(
+    posts = db(db.checklist.category == "burgers").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -21,7 +21,7 @@ def burgers():
 
 
 def desserts():
-    posts = db().select(
+    posts = db(db.checklist.category == "desserts").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -30,7 +30,7 @@ def desserts():
 
 
 def healthy():
-    posts = db().select(
+    posts = db(db.checklist.category == "healthy").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -39,7 +39,7 @@ def healthy():
 
 
 def korean():
-    posts = db().select(
+    posts = db(db.checklist.category == "korean").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -48,7 +48,7 @@ def korean():
 
 
 def pasta():
-    posts = db().select(
+    posts = db(db.checklist.category == "pasta").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -57,7 +57,7 @@ def pasta():
 
 
 def pizza():
-    posts = db().select(
+    posts = db(db.checklist.category == "pizza").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -66,7 +66,7 @@ def pizza():
 
 
 def sandwiches():
-    posts = db().select(
+    posts = db(db.checklist.category == "sandwiches").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -75,7 +75,7 @@ def sandwiches():
 
 
 def sushi():
-    posts = db().select(
+    posts = db(db.checklist.category == "sushi").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
@@ -84,7 +84,7 @@ def sushi():
 
 
 def burger():
-    posts = db().select(
+    posts = db(db.checklist.category == "burger").select(
         orderby=~db.checklist.updated_on,
         limitby=(0, 5)
     )
