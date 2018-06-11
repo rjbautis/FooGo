@@ -226,7 +226,7 @@ function load(mapNum) {
                             <div class="form-group row edit-buttons" id="submit_record__row">
                                 <div class="col-md-6">
                                     <button v-if="is_adding_comment" class="btn btn-warning btn-sm cancel-button"
-                                            v-on:click="add_comment_button()" type="button">
+                                            v-on:click="add_comment_button(listing_idx)" type="button">
                                         Cancel
                                     </button>
                                 </div>
@@ -264,12 +264,10 @@ function load(mapNum) {
                                                 <!-- Edit listing -->
                                                 <a class="btn rounded" v-on:click="delete_comment(comment._idx)"><i
                                                         class="fa fa-trash fa-lg"></i></a>
-                                                <a v-if="!comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
-                                                        class="fa fa-qrcode"></i></a>
-                                                <a v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)" class="btn rounded"><i
-                                                        class="fa fa-qrcode"></i></a>
-                                                <img v-if="comment.showQR" v-on:click="toggle_QR(comment._idx)"
-                                                     v-bind:src="'/final/default/download/' + listing.venmo_QR_url"/>
+                                                <a v-on:click="toggle_QR(comment._idx)" class="btn rounded">
+                                                  <i v-bind:class="{'fa fa-qrcode': !comment.showQR, 'fa fa-close': comment.showQR}"></i>
+                                                </a>
+                                                <img v-if="comment.showQR" v-bind:src=" '/final/default/download/' + comment.venmo_QR_url"/>
                                             </div>
                                         {{else:}}
                                         {{pass}}
